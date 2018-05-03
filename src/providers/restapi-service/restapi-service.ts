@@ -3,16 +3,17 @@ import { Storage } from '@ionic/storage';
 import { Response, Http, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { Observable } from 'rxjs/Observable';
+import { GlobalVars } from '../../app/globalVars';
 
 @Injectable()
 export class RestapiServiceProvider {
   err:any;
   data:any;
-  apiUrl:string;
-  //apiUrl = 'http://192.168.137.1:9090';
-  //apiUrl = 'http://localhost:3000';
-  constructor(public http: Http, 
-              public storage:Storage){
+  apiUrl = 'https://anilist.co/api';
+  constructor(
+    public http: Http, 
+    public storage:Storage,
+    public globalVars:GlobalVars){
   }
 
   // get(apiUrl,resource,id,headers):Promise<any>{
@@ -63,12 +64,13 @@ export class RestapiServiceProvider {
   //   });
   // }
 
-  headers():RequestOptions{
+  headers(token):RequestOptions{
     let headers = new Headers();
-    //headers.append('Accept', 'application/vnd.api+json');
-    headers.append('Accept', 'text/xml, text/*');
-    //headers.append('Content-Type', 'application/vnd.api+json');
-    headers.append('Content-Type', 'text/xml, text/*');
+    if(token != null)headers.append("Authorization", "Bearer " + token);
+    headers.append('Accept', 'application/vnd.api+json');
+    headers.append('Content-Type', 'application/vnd.api+json');
+    //headers.append('Accept', 'text/xml, text/*');
+    //headers.append('Content-Type', 'text/xml, text/*');
     headers.append('Access-Control-Allow-Origin', '*');
     // let encoded_value = btoa('animunotifier' + ":" + 'Elpsycongoro');
     // headers.append("Authorization", "Basic " + encoded_value);
@@ -77,12 +79,22 @@ export class RestapiServiceProvider {
   }
 
 
+  authorize(data){
+    return new Promise((resolve, reject) => {
+      this.http.post(this.apiUrl+'/auth/access_token',data,this.headers(null))
+      .subscribe(res => {
+        resolve(res);
+      }, (err) => {
+        reject(err);
+      });
+  });
+  }
+
   getUsers() {
     //this.get(this.getApiUrl,"users",null,this.headers);
     return new Promise(resolve => {
-      this.storage.get('apiUrl').then((value) => {
-        //console.log(value);
-        this.http.get('https://animunotifier:Elpsycongoro@myanimelist.net/api/anime/search.xml?q=full+metal',this.headers())
+        console.log("token: "+this.globalVars.getToken());
+        this.http.get(this.apiUrl+'/anime/50',this.headers(this.globalVars.getToken()))
         .map(res => res.json())
         .subscribe(data => {
           this.data = data;
@@ -91,7 +103,6 @@ export class RestapiServiceProvider {
           this.err = err;
           resolve(this.err);
         });
-      });
     });
   }
 }
