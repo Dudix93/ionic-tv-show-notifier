@@ -65,10 +65,13 @@ export class RestapiServiceProvider {
 
   headers():RequestOptions{
     let headers = new Headers();
-    headers.append('Accept', 'application/vnd.api+json');
-    headers.append('Content-Type', 'application/vnd.api+json');
+    //headers.append('Accept', 'application/vnd.api+json');
+    headers.append('Accept', 'text/xml, text/*');
+    //headers.append('Content-Type', 'application/vnd.api+json');
+    headers.append('Content-Type', 'text/xml, text/*');
     headers.append('Access-Control-Allow-Origin', '*');
-    //headers.append('Authorization', 'Bearer '+this.globalVar.getToken());
+    // let encoded_value = btoa('animunotifier' + ":" + 'Elpsycongoro');
+    // headers.append("Authorization", "Basic " + encoded_value);
     headers.append("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     return new RequestOptions({headers:headers});
   }
@@ -79,7 +82,7 @@ export class RestapiServiceProvider {
     return new Promise(resolve => {
       this.storage.get('apiUrl').then((value) => {
         //console.log(value);
-        this.http.get('https://kitsu.io/api/edge/anime',this.headers())
+        this.http.get('https://animunotifier:Elpsycongoro@myanimelist.net/api/anime/search.xml?q=full+metal',this.headers())
         .map(res => res.json())
         .subscribe(data => {
           this.data = data;

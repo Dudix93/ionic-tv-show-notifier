@@ -16,9 +16,10 @@ export class HomePage {
 
       this.restApi.getUsers().then(data=>{
         this.animu = data;
-        this.animu.data.forEach(element => {
-          console.log(element.attributes.canonicalTitle);
-        });
+        console.log(this.animu);
+        // this.animu.data.forEach(element => {
+        //   console.log(element.attributes.canonicalTitle);
+        // });
       });
   }
 
