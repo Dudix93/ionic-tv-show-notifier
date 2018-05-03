@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
+import { RestapiServiceProvider } from '../../providers/restapi-service/restapi-service';
 
 @Component({
   selector: 'page-home',
@@ -7,8 +8,18 @@ import { NavController } from 'ionic-angular';
 })
 export class HomePage {
 
-  constructor(public navCtrl: NavController) {
+  animu:any;
 
+  constructor(
+    public navCtrl: NavController,
+    public restApi: RestapiServiceProvider) {
+
+      this.restApi.getUsers().then(data=>{
+        this.animu = data;
+        this.animu.data.forEach(element => {
+          console.log(element.attributes.canonicalTitle);
+        });
+      });
   }
 
 }
