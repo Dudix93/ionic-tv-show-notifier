@@ -9,12 +9,14 @@ import { GlobalVars } from '../app/globalVars';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
+import { InfoPage } from '../pages/info/info';
 import { IonicStorageModule } from '@ionic/storage';
 
 @NgModule({
   declarations: [
     MyApp,
-    HomePage
+    HomePage,
+    InfoPage
   ],
   imports: [
     BrowserModule,
@@ -25,7 +27,8 @@ import { IonicStorageModule } from '@ionic/storage';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage
+    HomePage,
+    InfoPage
   ],
   providers: [
     StatusBar,

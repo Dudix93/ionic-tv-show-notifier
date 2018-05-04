@@ -90,11 +90,11 @@ export class RestapiServiceProvider {
   });
   }
 
-  getAnime(id) {
+  getAnime(page) {
     //this.get(this.getApiUrl,"users",null,this.headers);
     return new Promise(resolve => {
         //console.log("token: "+this.globalVars.getToken());
-        this.http.get(this.apiUrl+'/anime/'+id,this.headers(this.globalVars.getToken()))
+        this.http.get(this.apiUrl+'/browse/anime?status=currently airing&page='+page,this.headers(this.globalVars.getToken()))
         .map(res => res.json())
         .subscribe(data => {
           this.data = data;

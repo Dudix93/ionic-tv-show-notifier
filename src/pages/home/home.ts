@@ -3,6 +3,7 @@ import { NavController } from 'ionic-angular';
 import { RestapiServiceProvider } from '../../providers/restapi-service/restapi-service';
 import { Storage } from '@ionic/storage';
 import { GlobalVars } from '../../app/globalVars';
+import { InfoPage } from '../info/info';
 
 @Component({
   selector: 'page-home',
@@ -12,7 +13,8 @@ export class HomePage {
 
   animu:any;
   response:any;
-  animes:Array<string> = []
+  animes:Array<any> = []
+  searchResults:Array<any> = []
   searchString:string = null
 
   // client_credentials:number = 403;
@@ -38,16 +40,33 @@ export class HomePage {
   getAnimes(){
     this.animes = [];
     if(this.searchString != null && this.searchString != ''){
-      this.searchString = this.searchString.substr(0, 1).toUpperCase() + this.searchString.substr(1);
+      this.searchString = this.searchString.toLocaleLowerCase();
     }
-    for(let i=0; i<500; i++){
+    for(let i=1; i<20; i++){
       this.restApi.getAnime(i).then(data=>{
         this.animu = data;
-        if(this.animu.status != 404 && this.animu.title_english.startsWith(this.searchString)){
-          this.animes.push(this.animu);
-        }
-      })
+        this.animu.forEach(a => {
+          this.animes.push(a);
+        });
+      });
     }
+  }
+
+  search(){
+    this.animes.forEach(a=>{
+      if(a.title_english.toLocaleLowerCase().includes(this.searchString)){
+        this.searchResults.push(a);
+      }
+    });
+  }
+
+  clearSearch(){
+    this.searchResults = [];
+    this.searchString = null;
+  }
+
+  moreInfo(anime:any){
+    this.navCtrl.push(InfoPage,{"anime":anime});
   }
 
 }

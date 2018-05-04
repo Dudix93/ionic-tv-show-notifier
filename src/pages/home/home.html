@@ -1,20 +1,21 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>
-      Animu
-    </ion-title>
+    <ion-input placeholder="Anime title" [(ngModel)]="searchString"></ion-input>
+    <ion-buttons end>
+      <button ion-button *ngIf="searchResults.length == 0" (click)="search()">Search</button>
+      <button ion-button *ngIf="searchResults.length != 0" (click)="clearSearch()">Clear</button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
 
-    <ion-item>
-        <ion-label color="primary">Search anime</ion-label>
-        <ion-input placeholder="Text Input" [(ngModel)]="searchString"></ion-input>
-      </ion-item>
-      
-      <button ion-button (click)="getAnimes()">Search</button>
+  <ion-list *ngIf="searchResults.length == 0">
+    <ion-item *ngFor="let a of animes" (click)="moreInfo(a)">{{a.title_english}}</ion-item>
+  </ion-list>
 
-  <ion-item *ngFor="let a of animes">{{a.title_english}}</ion-item>
+  <ion-list *ngIf="searchResults.length != 0">
+    <ion-item *ngFor="let a of searchResults" (click)="moreInfo(a)">{{a.title_english}}</ion-item>
+  </ion-list>
 
 </ion-content>
