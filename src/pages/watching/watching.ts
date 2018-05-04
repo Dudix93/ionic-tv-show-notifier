@@ -10,6 +10,7 @@ import { Storage } from '@ionic/storage';
 export class WatchingPage {
 
   watching:Array<any> = []
+  now:Date = new Date();
 
   constructor(
     public navCtrl: NavController, 
@@ -20,5 +21,9 @@ export class WatchingPage {
       });
   }
 
+  remove(anime){
+    this.watching.splice(this.watching.indexOf(anime),1);
+    this.storage.set('watching',this.watching);
+  }
 
 }

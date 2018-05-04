@@ -15,7 +15,8 @@ export class InfoPage {
     "title_romaji":'',
     "description":'',
     "total_episodes":0,
-    "next_episode":'',
+    "next_episode":new Date(),
+    "next_episode_date":'',
     "image":{"url":'',"width":0,"height":0}
   }
 
@@ -48,7 +49,8 @@ export class InfoPage {
     this.anime.total_episodes = navParams.get('anime').total_episodes;
     this.anime.image.url = navParams.get('anime').image_url_lge;
     date = new Date(navParams.get('anime').airing.time);
-    this.anime.next_episode = date.getUTCDate().toString()+" - "+(date.getMonth()+1).toString()+" - "+date.getUTCFullYear().toString();
+    this.anime.next_episode = date;
+    this.anime.next_episode_date = date.getUTCDate().toString()+" - "+(date.getMonth()+1).toString()+" - "+date.getUTCFullYear().toString();
 
     let img = new Image();
     img.src = this.anime.image.url;

@@ -1,9 +1,3 @@
-<!--
-  Generated template for the WatchingPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
 
   <ion-navbar>
@@ -15,8 +9,13 @@
 
 <ion-content padding>
 
-  <ion-list *ngIf="watching.length != 0">
-    <ion-item *ngFor="let a of watching" (click)="moreInfo(a)">{{a.title_english}}</ion-item>
-  </ion-list>
+  <ion-grid *ngIf="watching.length != 0">
+    <ion-item *ngFor="let a of watching">
+      <ion-row>
+            <ion-col col-11 (click)="moreInfo(a)">{{a.title_english}} in {{a.next_episode-now}}</ion-col>
+            <ion-col col-1 (click)="remove(a)"><ion-icon name="md-close"></ion-icon></ion-col>
+      </ion-row>
+    </ion-item>
+  </ion-grid>
 
 </ion-content>
