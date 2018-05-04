@@ -8,15 +8,19 @@ import { HttpModule } from '@angular/http';
 import { GlobalVars } from '../app/globalVars';
 
 import { MyApp } from './app.component';
-import { HomePage } from '../pages/home/home';
+import { TabsPage } from '../pages/tabs/tabs';
+import { BrowsePage } from '../pages/browse/browse';
+import { WatchingPage } from '../pages/watching/watching';
 import { InfoPage } from '../pages/info/info';
 import { IonicStorageModule } from '@ionic/storage';
 
 @NgModule({
   declarations: [
     MyApp,
-    HomePage,
-    InfoPage
+    BrowsePage,
+    WatchingPage,
+    InfoPage,
+    TabsPage
   ],
   imports: [
     BrowserModule,
@@ -27,8 +31,10 @@ import { IonicStorageModule } from '@ionic/storage';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage,
-    InfoPage
+    BrowsePage,
+    WatchingPage,
+    InfoPage,
+    TabsPage
   ],
   providers: [
     StatusBar,

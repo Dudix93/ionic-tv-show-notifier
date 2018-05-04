@@ -16,54 +16,6 @@ export class RestapiServiceProvider {
     public globalVars:GlobalVars){
   }
 
-  // get(apiUrl,resource,id,headers):Promise<any>{
-  //   console.log(apiUrl);
-  //   if(id == null){
-  //     console.log("nie ma id");
-  //     return new Promise(resolve => {
-  //       this.http.get(apiUrl+'/'+resource)
-  //       .map(res => res.json())
-  //       .subscribe(data => {
-  //         this.data = data;
-  //         resolve(this.data);
-  //       });
-  //   });
-  //   }
-  //   else{
-  //     console.log("jest id");
-  //     return new Promise(resolve => {
-  //       this.http.get(apiUrl+'/'+resource+'/'+id)
-  //       .map(res => res.json())
-  //       .subscribe(data => {
-  //         this.data = data;
-  //         resolve(this.data);
-  //       });
-  //   });
-  //   }
-  // }
-
-  // post(apiUrl,resource,data,headers):Promise<any>{
-  //   return new Promise((resolve, reject) => {
-  //       this.http.post(apiUrl+'/'+resource+'/',data,headers)
-  //       .subscribe(res => {
-  //         resolve(res);
-  //       }, (err) => {
-  //         reject(err);
-  //       });
-  //   });
-  // }
-
-  // delete(apiUrl,resource,id):Promise<any>{
-  //   return new Promise((resolve, reject) => {
-  //       this.http.delete(apiUrl+'/'+resource+'/',id)
-  //       .subscribe(res => {
-  //         resolve(res);
-  //       }, (err) => {
-  //         reject(err);
-  //       });
-  //   });
-  // }
-
   headers(token):RequestOptions{
     let headers = new Headers();
     if(token != null)headers.append("Authorization", "Bearer " + token);
@@ -111,6 +63,10 @@ export class RestapiServiceProvider {
 
   getGenres(){
     return this.postRequest('/genre_list');
+  }
+
+  getData(id){
+    return this.postRequest('/anime/'+id);
   }
 }
 

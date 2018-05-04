@@ -7,10 +7,10 @@ import { InfoPage } from '../info/info';
 import { Genre } from '../../models/genre';
 
 @Component({
-  selector: 'page-home',
-  templateUrl: 'home.html'
+  selector: 'page-browse',
+  templateUrl: 'browse.html'
 })
-export class HomePage {
+export class BrowsePage {
 
   animu:any;
   response:any;
@@ -59,10 +59,11 @@ export class HomePage {
 
   getGenres(){
     this.restApi.getGenres().then(data=>{
+      console.log(data);
       let gen = data;
-      gen.forEach(g => {
-        this.genres.push(new Genre(false,g.genre));
-      });
+      // gen.forEach(g => {
+      //   this.genres.push(new Genre(false,g.genre));
+      // });
     });
   }
 
@@ -129,7 +130,9 @@ export class HomePage {
   }
 
   moreInfo(anime:any){
-    this.navCtrl.push(InfoPage,{"anime":anime});
+    this.restApi.getData(anime.id).then(data=>{
+      this.navCtrl.push(InfoPage,{"anime":data});
+    });
   }
 
 }

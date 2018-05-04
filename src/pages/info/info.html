@@ -2,6 +2,10 @@
 
   <ion-navbar>
     <ion-title>{{anime.title_english}}</ion-title>
+    <ion-buttons end>
+      <button ion-button color="danger" *ngIf="watching == true" (click)="remove()">Remove</button>
+      <button ion-button color="secondary" *ngIf="watching == false" (click)="add()">Add</button>
+    </ion-buttons>
   </ion-navbar>
 
 </ion-header>
@@ -12,6 +16,6 @@
   <ion-img width={{anime.image.width}} height={{anime.image.height}} src={{anime.image.url}}></ion-img>
 
   <ion-item>{{anime.title_english}}</ion-item>
-  <ion-item>Episodes: {{anime.total_episodes}}</ion-item>
+  <ion-item text-wrap>Next episode: {{anime.next_episode}}</ion-item>
   <ion-item text-wrap>{{anime.description}}</ion-item>
 </ion-content>
