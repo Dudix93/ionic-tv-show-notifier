@@ -90,11 +90,10 @@ export class RestapiServiceProvider {
   });
   }
 
-  getAnime(page) {
-    //this.get(this.getApiUrl,"users",null,this.headers);
+  postRequest(parameters) {
     return new Promise(resolve => {
         //console.log("token: "+this.globalVars.getToken());
-        this.http.get(this.apiUrl+'/browse/anime?status=currently airing&page='+page,this.headers(this.globalVars.getToken()))
+        this.http.get(this.apiUrl+parameters,this.headers(this.globalVars.getToken()))
         .map(res => res.json())
         .subscribe(data => {
           this.data = data;
@@ -104,6 +103,14 @@ export class RestapiServiceProvider {
           resolve(this.err);
         });
     });
+  }
+
+  getAnime(page) {
+    return this.postRequest('/browse/anime?status=currently airing&page='+page);
+  }
+
+  getGenres(){
+    return this.postRequest('/genre_list');
   }
 }
 

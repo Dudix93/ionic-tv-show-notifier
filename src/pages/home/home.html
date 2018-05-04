@@ -4,17 +4,28 @@
     <ion-buttons end>
       <button ion-button *ngIf="searchResults.length == 0" (click)="search()">Search</button>
       <button ion-button *ngIf="searchResults.length != 0" (click)="clearSearch()">Clear</button>
+      <ion-label>Selected: {{selectedGenres.length}}</ion-label>
     </ion-buttons>
+    <button ion-button *ngIf="showGenres == false" (click)="showCategories()">Categories</button>
+    <button ion-button *ngIf="showGenres == true" (click)="hideCategories()">Hide</button>
+    <button ion-button *ngIf="selectedGenres.length != 0" (click)="clearCelectedGenres()">Clear</button>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
 
-  <ion-list *ngIf="searchResults.length == 0">
+    <ion-list *ngIf="showGenres == true">
+      <ng-container *ngFor="let g of genres">
+          <ion-item *ngIf="g.selected == false" (click)="selectGenre(g.name)">{{g.name}}</ion-item>
+          <ion-item *ngIf="g.selected == true" class="selected" (click)="unselectGenre(g.name)">{{g.name}}</ion-item>
+      </ng-container>
+    </ion-list>
+
+  <ion-list *ngIf="searchResults.length == 0 && showGenres == false">
     <ion-item *ngFor="let a of animes" (click)="moreInfo(a)">{{a.title_english}}</ion-item>
   </ion-list>
 
-  <ion-list *ngIf="searchResults.length != 0">
+  <ion-list *ngIf="searchResults.length != 0 && showGenres == false">
     <ion-item *ngFor="let a of searchResults" (click)="moreInfo(a)">{{a.title_english}}</ion-item>
   </ion-list>
 

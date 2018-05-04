@@ -4,6 +4,7 @@ import { RestapiServiceProvider } from '../../providers/restapi-service/restapi-
 import { Storage } from '@ionic/storage';
 import { GlobalVars } from '../../app/globalVars';
 import { InfoPage } from '../info/info';
+import { Genre } from '../../models/genre';
 
 @Component({
   selector: 'page-home',
@@ -14,8 +15,11 @@ export class HomePage {
   animu:any;
   response:any;
   animes:Array<any> = []
+  genres:Array<any> = []
+  selectedGenres:Array<string> = [];
   searchResults:Array<any> = []
   searchString:string = null
+  showGenres:boolean = false;
 
   // client_credentials:number = 403;
   // client_secret:string = 'gf66CF5kVIEhbyr5yKnweAVDxKxIZUmhuDQg8tTO';
@@ -34,6 +38,7 @@ export class HomePage {
         //console.log("token: "+this.response.json().access_token);
         this.globalVars.setToken(this.response.json().access_token);
         this.getAnimes();
+        this.getGenres();
       });
   }
 
@@ -52,6 +57,56 @@ export class HomePage {
     }
   }
 
+  getGenres(){
+    this.restApi.getGenres().then(data=>{
+      let gen = data;
+      gen.forEach(g => {
+        this.genres.push(new Genre(false,g.genre));
+      });
+    });
+  }
+
+  selectGenre(genre_name:string){
+    this.genres.forEach(g=>{
+      if(g.name == genre_name){
+        g.selected = true;
+      }
+    });
+    this.selectedGenres.push(genre_name);
+  }
+
+  unselectGenre(genre_name:string){
+    this.genres.forEach(g=>{
+      if(g.name == genre_name){
+        g.selected = false;
+      }
+    });
+    this.selectedGenres.splice(this.selectedGenres.indexOf(genre_name),1);
+  }
+
+  showCategories(){
+    this.getAnimes();
+    this.showGenres = true;
+  }
+
+  hideCategories(){
+    let selectedAnimes:Array<any> = [];
+    this.showGenres = false;
+    this.animes.forEach(a=>{
+      let found = 0;
+      this.selectedGenres.forEach(g=>{
+        if(a.genres.includes(g)){
+          found++;
+          //console.log(a.genres);
+        }
+      });
+      if(found == this.selectedGenres.length){
+        selectedAnimes.push(a);
+      }
+    });
+    this.animes = selectedAnimes;
+  }  
+
   search(){
     this.animes.forEach(a=>{
       if(a.title_english.toLocaleLowerCase().includes(this.searchString)){
@@ -63,6 +118,14 @@ export class HomePage {
   clearSearch(){
     this.searchResults = [];
     this.searchString = null;
+  }
+
+  clearCelectedGenres(){
+    this.getAnimes();
+    this.selectedGenres = [];
+    this.genres.forEach(g=>{
+      g.selected = false;
+    });
   }
 
   moreInfo(anime:any){
