@@ -18,7 +18,7 @@ export class BrowsePage {
   genres:Array<any> = []
   selectedGenres:Array<string> = [];
   searchResults:Array<any> = []
-  searchString:string = null
+  searchString:string = ''
   showGenres:boolean = false;
 
   // client_credentials:number = 403;
@@ -109,6 +109,8 @@ export class BrowsePage {
   }  
 
   search(){
+    console.log('searching...');
+    this.searchResults = [];
     this.animes.forEach(a=>{
       if(a.title_english.toLocaleLowerCase().includes(this.searchString)){
         this.searchResults.push(a);

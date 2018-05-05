@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 
 @IonicPage()
@@ -15,13 +15,21 @@ export class WatchingPage {
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
-    public storage: Storage) {
-      this.storage.get('watching').then(data=>{
-        if(data != null)this.watching = data;
-        this.watching.sort(this.compareValues("next_episode",'asc'));
+    public storage: Storage,
+    public event: Events) {
+      this.refreshList();
+      this.event.subscribe('refreshList',()=>{
+        this.refreshList();
       });
   }
 
+  refreshList(){
+    this.storage.get('watching').then(data=>{
+      if(data != null)this.watching = data;
+      this.watching.sort(this.compareValues("next_episode",'asc'));
+    });
+  }
+  
   counter(t){
     let cd = 24 * 60 * 60 * 1000,
         ch = 60 * 60 * 1000,

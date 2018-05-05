@@ -15,7 +15,7 @@ export class TabsPage {
 
   }
 
-  refreshProjects(){
-    this.events.publish("refreshProjects");
+  refreshList(){
+    this.events.publish("refreshList");
   }
 }
