@@ -1,7 +1,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>watching</ion-title>
+    <ion-title>Watching list</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -10,6 +10,19 @@
 <ion-content padding>
 
   <ion-label *ngIf="watching.length == 0">Watching list is empty.</ion-label>
+
+  <ion-grid *ngIf="watching.length != 0">
+    <ion-row>
+      <ion-col col-6>
+        <ion-img width={{newest.image.width}} height={{newest.image.height}} src={{newest.image.url}}></ion-img>
+      </ion-col>
+      <ion-col>
+        <ion-row><ion-col col-6>{{newest.title}}</ion-col></ion-row>
+        <ion-row><ion-col col-6>Next episode:</ion-col></ion-row>
+        <ion-row><ion-col col-6>{{newest.time_left}}</ion-col></ion-row>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
   <ion-grid *ngIf="watching.length != 0">
     <ion-item *ngFor="let a of watching">

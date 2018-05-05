@@ -11,6 +11,11 @@ export class WatchingPage {
 
   watching:Array<any> = []
   now:Date = new Date();
+  newest = {
+    "title":'',
+    "time_left":'',
+    "image":{"url":'',"width":0,"height":0}
+  }
 
   constructor(
     public navCtrl: NavController, 
@@ -25,8 +30,16 @@ export class WatchingPage {
 
   refreshList(){
     this.storage.get('watching').then(data=>{
-      if(data != null)this.watching = data;
-      this.watching.sort(this.compareValues("next_episode",'asc'));
+      if(data != null && data != ''){
+        this.watching = data;
+        this.watching.sort(this.compareValues("next_episode",'asc'));
+        this.newest.title = this.watching[0].title_english;
+        this.newest.time_left = this.counter((this.watching[0].next_episode).valueOf() - new Date().valueOf());
+        this.newest.image.url = this.watching[0].image.url;
+        this.newest.image.width = this.watching[0].image.width;
+        this.newest.image.height = this.watching[0].image.height;
+      }
+
     });
   }
   
@@ -73,6 +86,7 @@ compareValues(key, order='asc') {
   remove(anime){
     this.watching.splice(this.watching.indexOf(anime),1);
     this.storage.set('watching',this.watching);
+    this.refreshList();
   }
 
 }
