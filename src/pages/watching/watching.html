@@ -9,10 +9,12 @@
 
 <ion-content padding>
 
+  <ion-label *ngIf="watching.length == 0">Watching list is empty.</ion-label>
+
   <ion-grid *ngIf="watching.length != 0">
     <ion-item *ngFor="let a of watching">
       <ion-row>
-            <ion-col col-11 (click)="moreInfo(a)">{{a.title_english}} in {{a.next_episode-now}}</ion-col>
+            <ion-col col-11 (click)="moreInfo(a)">{{a.title_english}} in {{counter(a.next_episode-now)}}</ion-col>
             <ion-col col-1 (click)="remove(a)"><ion-icon name="md-close"></ion-icon></ion-col>
       </ion-row>
     </ion-item>
