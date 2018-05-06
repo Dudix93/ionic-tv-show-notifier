@@ -52,6 +52,7 @@ export class BrowsePage {
         this.animu = data;
         this.animu.forEach(a => {
           this.animes.push(a);
+          this.animes.sort(this.compareValues("title_english",'asc'));
         });
       });
     }
@@ -104,6 +105,7 @@ export class BrowsePage {
         }
       });
       if(found == this.selectedGenres.length){
+        //console.log('found cat: '+a.genres);
         selectedAnimes.push(a);
       }
     });
@@ -136,6 +138,26 @@ export class BrowsePage {
     this.restApi.getData(anime.id).then(data=>{
       this.navCtrl.push(InfoPage,{"anime":data});
     });
+  }
+
+  compareValues(key, order='asc') {
+    return function(a, b) {
+    
+      if(!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {
+          return 0; 
+      }
+  
+      const valueA = (typeof a[key] === 'string') ? a[key].toUpperCase() : a[key];
+      const valueB = (typeof b[key] === 'string') ? b[key].toUpperCase() : b[key];
+  
+      let comparison = 0;
+      if (valueA > valueB) {
+        comparison = 1;
+      } else if (valueA < valueB) {
+        comparison = -1;
+      }
+      return (order == 'desc') ? (comparison * -1) : comparison
+    };
   }
 
 }

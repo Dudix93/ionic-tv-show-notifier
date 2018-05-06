@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events, Platform } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 
 @IonicPage()
@@ -21,11 +21,13 @@ export class WatchingPage {
     public navCtrl: NavController, 
     public navParams: NavParams,
     public storage: Storage,
-    public event: Events) {
+    public event: Events,
+    public platform: Platform) {
       this.refreshList();
       this.event.subscribe('refreshList',()=>{
         this.refreshList();
       });
+
   }
 
   refreshList(){
@@ -36,8 +38,10 @@ export class WatchingPage {
         this.newest.title = this.watching[0].title_english;
         this.newest.time_left = this.counter((this.watching[0].next_episode).valueOf() - new Date().valueOf());
         this.newest.image.url = this.watching[0].image.url;
-        this.newest.image.width = this.watching[0].image.width;
-        this.newest.image.height = this.watching[0].image.height;
+        this.platform.ready().then((readySource) => {
+          this.newest.image.width = this.platform.width()/3;
+          this.newest.image.height = this.watching[0].image.height - (this.watching[0].image.width - this.newest.image.width) - ((this.watching[0].image.width - this.newest.image.width)/2);
+        });
       }
 
     });
