@@ -123,7 +123,7 @@ export class BrowsePage {
 
   clearSearch(){
     this.searchResults = [];
-    this.searchString = null;
+    this.searchString = '';
   }
 
   clearCelectedGenres(){

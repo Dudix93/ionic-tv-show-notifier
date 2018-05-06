@@ -2,7 +2,7 @@
   <ion-navbar>
     <ion-input placeholder="Anime title" [(ngModel)]="searchString" (ngModelChange)="search()"></ion-input>
     <ion-buttons end>
-      <button ion-button *ngIf="searchResults.length != 0 && searchString != ''" (click)="clearSearch()">Clear</button>
+      <button ion-button *ngIf="searchString != ''" (click)="clearSearch()">Clear</button>
       <ion-label>Selected: {{selectedGenres.length}}</ion-label>
     </ion-buttons>
     <button ion-button *ngIf="showGenres == false" (click)="showCategories()">Categories</button>
