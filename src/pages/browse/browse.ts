@@ -19,6 +19,8 @@ export class BrowsePage {
   selectedGenres:Array<string> = [];
   searchResults:Array<any> = []
   searchString:string = ''
+  order:string = 'asc'
+  title_type:string = 'title_english'
   showGenres:boolean = false;
 
   // client_credentials:number = 403;
@@ -140,7 +142,19 @@ export class BrowsePage {
     });
   }
 
-  compareValues(key, order='asc') {
+  changeOrder(){
+    if(this.order == 'asc')this.order = 'desc'
+    else this.order = 'asc'
+    this.animes.sort(this.compareValues(this.title_type,this.order));
+  }
+
+  changeTitleType(){
+    if(this.title_type == 'title_romaji')this.title_type = 'title_japanese'
+    else if(this.title_type == 'title_japanese')this.title_type = 'title_english'
+    else this.title_type = 'title_romaji'
+  }
+
+  compareValues(key, order = 'asc') {
     return function(a, b) {
     
       if(!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {

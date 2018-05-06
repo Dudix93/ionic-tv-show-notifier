@@ -11,7 +11,36 @@
   </ion-navbar>
 </ion-header>
 
+
 <ion-content padding>
+
+    <ion-fab bottom right >
+        <button ion-fab>
+          <ion-icon name="md-settings"></ion-icon>
+        </button>
+        <ion-fab-list side="top">
+          <button ion-fab (click)="changeTitleType()">
+            <ion-icon name="md-quote"></ion-icon>
+            <ion-label *ngIf="title_type == 'title_english'">English</ion-label>
+            <ion-label *ngIf="title_type == 'title_japanese'">Japanese</ion-label>
+            <ion-label *ngIf="title_type == 'title_romaji'">Romaji</ion-label>
+          </button>
+          <button ion-fab (click)="changeOrder()">
+            <ng-container *ngIf="order == 'asc'">
+                <ion-icon name="md-trending-down"></ion-icon>
+                <ion-label>Order A-Z</ion-label>
+            </ng-container>
+            <ng-container *ngIf="order == 'desc'">
+                <ion-icon name="md-trending-up"></ion-icon>
+                <ion-label>Order Z-A</ion-label>
+            </ng-container>
+          </button>
+          <button ion-fab (click)="changeNotificationHour()">
+              <ion-icon name="md-alarm"></ion-icon>
+              <ion-label>Notification hour</ion-label>
+          </button>
+        </ion-fab-list>
+      </ion-fab>
 
     <ion-list *ngIf="showGenres == true">
       <ng-container *ngFor="let g of genres">
@@ -25,11 +54,19 @@
     </ion-label>  
 
     <ion-list *ngIf="searchResults.length == 0 && showGenres == false && searchString == ''">
-      <ion-item *ngFor="let a of animes" (click)="moreInfo(a)">{{a.title_english}}</ion-item>
+        <ng-container *ngFor="let a of animes">
+            <ion-item *ngIf="title_type == 'title_english'" (click)="moreInfo(a)">{{a.title_english}}</ion-item>
+            <ion-item *ngIf="title_type == 'title_japanese'" (click)="moreInfo(a)">{{a.title_japanese}}</ion-item>
+            <ion-item *ngIf="title_type == 'title_romaji'" (click)="moreInfo(a)">{{a.title_romaji}}</ion-item>
+        </ng-container>
     </ion-list>
 
     <ion-list *ngIf="searchResults.length != 0 && showGenres == false">
-      <ion-item *ngFor="let a of searchResults" (click)="moreInfo(a)">{{a.title_english}}</ion-item>
+      <ng-container *ngFor="let a of searchResults">
+          <ion-item *ngIf="title_type == 'title_english'" (click)="moreInfo(a)">{{a.title_english}}</ion-item>
+          <ion-item *ngIf="title_type == 'title_japanese'" (click)="moreInfo(a)">{{a.title_japanese}}</ion-item>
+          <ion-item *ngIf="title_type == 'title_romaji'" (click)="moreInfo(a)">{{a.title_romaji}}</ion-item>
+      </ng-container>
     </ion-list>
 
 </ion-content>
