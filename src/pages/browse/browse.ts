@@ -60,10 +60,10 @@ export class BrowsePage {
   getGenres(){
     this.restApi.getGenres().then(data=>{
       console.log(data);
-      let gen = data;
-      // gen.forEach(g => {
-      //   this.genres.push(new Genre(false,g.genre));
-      // });
+      let gen:any = data;
+      gen.forEach(g => {
+        this.genres.push(new Genre(false,g.genre));
+      });
     });
   }
 
@@ -71,6 +71,7 @@ export class BrowsePage {
     this.genres.forEach(g=>{
       if(g.name == genre_name){
         g.selected = true;
+        console.log(g);
       }
     });
     this.selectedGenres.push(genre_name);
@@ -80,6 +81,7 @@ export class BrowsePage {
     this.genres.forEach(g=>{
       if(g.name == genre_name){
         g.selected = false;
+        console.log(g);
       }
     });
     this.selectedGenres.splice(this.selectedGenres.indexOf(genre_name),1);
@@ -109,10 +111,9 @@ export class BrowsePage {
   }  
 
   search(){
-    console.log('searching...');
     this.searchResults = [];
     this.animes.forEach(a=>{
-      if(a.title_english.toLocaleLowerCase().includes(this.searchString)){
+      if(a.title_english.toLocaleLowerCase().includes(this.searchString.toLocaleLowerCase())){
         this.searchResults.push(a);
       }
     });
