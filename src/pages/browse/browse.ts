@@ -194,9 +194,10 @@ export class BrowsePage {
                 is24Hour: true,
                 androidTheme: this.datePicker.ANDROID_THEMES.THEME_DEVICE_DEFAULT_LIGHT
               }).then(
-                date => () =>{
-                  console.log(this.notification);
-                  this.storage.set('notification_hour',this.notification)
+                date => {
+                  this.notification.hour = date;
+                  this.storage.set('notification_hour',this.notification);
+                  console.log("picked date: "+date);
                 },
                 err => console.log('Error occurred while getting date: ', err)
               );
@@ -205,8 +206,10 @@ export class BrowsePage {
           {
             text: "OK",
             handler: data => {
-              if(data.length == 1)console.log("checked");
-              else console.log("unchecked");
+              if(data.length == 1)this.notification.same = true;
+              else this.notification.same = false;
+              console.log(this.notification);
+              this.storage.set('notification_hour',this.notification)
             }
           }
         ]
