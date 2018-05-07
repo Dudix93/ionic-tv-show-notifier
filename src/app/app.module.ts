@@ -6,6 +6,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { RestapiServiceProvider } from '../providers/restapi-service/restapi-service'
 import { HttpModule } from '@angular/http';
 import { GlobalVars } from '../app/globalVars';
+import { DatePicker } from '@ionic-native/date-picker';
 
 import { MyApp } from './app.component';
 import { TabsPage } from '../pages/tabs/tabs';
@@ -41,6 +42,7 @@ import { IonicStorageModule } from '@ionic/storage';
     SplashScreen,
     RestapiServiceProvider,
     GlobalVars,
+    DatePicker,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

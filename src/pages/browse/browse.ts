@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, AlertController, Checkbox } from 'ionic-angular';
 import { RestapiServiceProvider } from '../../providers/restapi-service/restapi-service';
 import { Storage } from '@ionic/storage';
 import { GlobalVars } from '../../app/globalVars';
 import { InfoPage } from '../info/info';
 import { Genre } from '../../models/genre';
+import { DatePicker } from '@ionic-native/date-picker';
 
 @Component({
   selector: 'page-browse',
@@ -22,6 +23,10 @@ export class BrowsePage {
   order:string = 'asc'
   title_type:string = 'title_english'
   showGenres:boolean = false;
+  notification = {
+    same:true,
+    hour:new Date()
+  }
 
   // client_credentials:number = 403;
   // client_secret:string = 'gf66CF5kVIEhbyr5yKnweAVDxKxIZUmhuDQg8tTO';
@@ -33,7 +38,9 @@ export class BrowsePage {
     public navCtrl: NavController,
     public restApi: RestapiServiceProvider,
     public storage: Storage,
-    public globalVars: GlobalVars) {
+    public globalVars: GlobalVars,
+    public datePicker: DatePicker,
+    public alertCtrl: AlertController,) {
 
       this.restApi.authorize({grant_type:"client_credentials",client_id:this.client_credentials,client_secret:this.client_secret}).then(data=>{
         this.response = data;
@@ -145,13 +152,67 @@ export class BrowsePage {
   changeOrder(){
     if(this.order == 'asc')this.order = 'desc'
     else this.order = 'asc'
-    this.animes.sort(this.compareValues(this.title_type,this.order));
+    if(this.searchResults.length != 0)this.searchResults.sort(this.compareValues(this.title_type,this.order));
+    else this.animes.sort(this.compareValues(this.title_type,this.order));
   }
 
   changeTitleType(){
     if(this.title_type == 'title_romaji')this.title_type = 'title_japanese'
     else if(this.title_type == 'title_japanese')this.title_type = 'title_english'
     else this.title_type = 'title_romaji'
+  }
+
+  changeNotificationHour(){
+    this.storage.get('notification_hour').then(data=>{
+      if (data == null){
+        this.notification.same = true;
+        this.notification.hour = new Date();
+      }
+      else this.notification = data;
+      console.log(this.notification);
+      let hour = {
+        h:this.notification.hour.getHours(),
+        m:(this.notification.hour.getMinutes() < 10) ? "0"+this.notification.hour.getMinutes() : +this.notification.hour.getMinutes()
+      }
+      let alert = this.alertCtrl.create({
+        title: 'Notification hour:',
+        inputs: [
+          {
+            name: 'original_hour',
+            type: 'checkbox',
+            label: 'Same as original airing hour',
+            checked: this.notification.same
+          }
+        ],
+        buttons: [
+          {
+            text: hour.h+":"+hour.m,
+            handler: data => {
+              this.datePicker.show({
+                date: new Date(),
+                mode: 'time',
+                is24Hour: true,
+                androidTheme: this.datePicker.ANDROID_THEMES.THEME_DEVICE_DEFAULT_LIGHT
+              }).then(
+                date => () =>{
+                  console.log(this.notification);
+                  this.storage.set('notification_hour',this.notification)
+                },
+                err => console.log('Error occurred while getting date: ', err)
+              );
+            }
+          },
+          {
+            text: "OK",
+            handler: data => {
+              if(data.length == 1)console.log("checked");
+              else console.log("unchecked");
+            }
+          }
+        ]
+      });
+      alert.present();
+    });
   }
 
   compareValues(key, order = 'asc') {
