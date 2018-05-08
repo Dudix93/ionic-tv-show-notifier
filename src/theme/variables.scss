@@ -38,10 +38,19 @@ $colors: (
   secondary:  #32db64,
   danger:     #f53d3d,
   light:      #f4f4f4,
-  dark:       #222
+  dark:       #222,
+  button:     rgb(149, 218, 214)
 );
 
+$tabs-md-tab-icon-color: #346664;
+$tabs-md-tab-icon-color-active: #70A2A0;
+$tabs-background:#013735;
+$tabs-md-tab-text-color:#346664;
+$tabs-md-tab-text-color-active:#70A2A0;
 
+$toolbar-md-title-text-color: rgb(149, 218, 214);
+$toolbar-ios-title-text-color: rgb(149, 218, 214);
+$toolbar-wp-title-text-color: rgb(149, 218, 214);
 // App iOS Variables
 // --------------------------------------------------
 // iOS only Sass variables can go here

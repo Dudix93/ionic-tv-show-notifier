@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
+import { AnimeWatching } from '../../models/animeWatching';
 
 @IonicPage()
 @Component({
@@ -22,6 +23,7 @@ export class InfoPage {
 
   list:Array<any> = []
   watching:boolean = false;
+  unselectable:boolean = false;
 
   constructor(
     public navCtrl: NavController, 
@@ -45,12 +47,19 @@ export class InfoPage {
     this.anime.id = navParams.get('anime').id;
     this.anime.title_english = navParams.get('anime').title_english;
     this.anime.title_romaji = navParams.get('anime').title_romaji;
-    this.anime.description = navParams.get('anime').description;
+    if(navParams.get('anime').description != null)this.anime.description = navParams.get('anime').description;
+    else this.anime.description = "No description provided."
     this.anime.total_episodes = navParams.get('anime').total_episodes;
     this.anime.image.url = navParams.get('anime').image_url_lge;
-    date = new Date(navParams.get('anime').airing.time);
-    this.anime.next_episode = date;
-    this.anime.next_episode_date = date.getUTCDate().toString()+" - "+(date.getMonth()+1).toString()+" - "+date.getUTCFullYear().toString();
+    if(navParams.get('anime').airing != null){
+      date = new Date(navParams.get('anime').airing.time);
+      this.anime.next_episode = date;
+      this.anime.next_episode_date = date.getUTCDate().toString()+" - "+(date.getMonth()+1).toString()+" - "+date.getUTCFullYear().toString();
+    }
+    else{
+      this.unselectable = true;
+    }
+
 
     let img = new Image();
     img.src = this.anime.image.url;
@@ -61,7 +70,7 @@ export class InfoPage {
   }
 
   add(){
-    this.list.push(this.anime);
+    this.list.push(new AnimeWatching(this.anime.id,this.anime.title_english,this.anime.next_episode,0,this.anime.image));
     this.storage.set('watching',this.list);
     this.watching = true;
   }

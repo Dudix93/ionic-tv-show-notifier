@@ -1,35 +1,41 @@
 <!-- <ion-header>
   <ion-navbar>
-    <ion-input placeholder="Anime title" [(ngModel)]="searchString" (ngModelChange)="search()"></ion-input>
-    <ion-buttons end>
-      <button ion-button *ngIf="searchString != ''" (click)="clearSearch()">Clear</button>
-    </ion-buttons>
+
+
 
   </ion-navbar>
 </ion-header> -->
 
 
 <ion-content padding>
-    <ion-searchbar
+    <ion-searchbar *ngIf="showGenres == false"
     [(ngModel)]="searchString"
     [showCancelButton]="shouldShowCancel"
     (ionInput)="search()"
     (ionCancel)="clearSearch()"
     placeholder="Search for anime">
     </ion-searchbar>
-    <button ion-button *ngIf="showGenres == true" (click)="searchByGenre()">Back</button>
     <ion-grid *ngIf="selectedGenres.length != 0">
         <ion-row>
             <ion-col col-4 *ngFor="let genre of selectedGenres" class="token">
                 {{genre}} <ion-icon float-right name="md-close" (click)="unselectGenre(genre)"></ion-icon>
             </ion-col>
         </ion-row>
-      </ion-grid>
+    </ion-grid>
 
-    <ion-fab bottom right >
-        <button ion-fab>
+    <ion-fab bottom right *ngIf="showGenres == true">
+        <button ion-fab (click)="searchByGenre()" style="background-color:#052B2A;">
+            <ion-icon name="md-arrow-round-back"></ion-icon>
+        </button>
+    </ion-fab>
+
+    <ion-fab bottom right *ngIf="showGenres == false">
+        <button ion-fab style="background-color:#052B2A;">
           <ion-icon name="md-settings"></ion-icon>
         </button>
+        <button ion-fab *ngIf="showGenres == true" (click)="searchByGenre()" style="background-color:#052B2A;">
+            <ion-icon name="md-arrow-round-back"></ion-icon>
+          </button>
         <ion-fab-list side="top">
             <button ion-fab (click)="showCategories()">
                 <ion-icon name="md-pricetag"></ion-icon>
@@ -61,27 +67,23 @@
     <ion-list *ngIf="showGenres == true">
       <ng-container *ngFor="let g of genres">
           <ion-item *ngIf="g.selected == false" (click)="selectGenre(g.name)">{{g.name}}</ion-item>
-          <ion-item *ngIf="g.selected == true" class="ticked" (click)="unselectGenre(g.name)">{{g.name}}</ion-item>
+          <ion-item *ngIf="g.selected == true" (click)="unselectGenre(g.name)">{{g.name}}<ion-icon float-right name="md-checkmark-circle"></ion-icon></ion-item>
       </ng-container>
     </ion-list>
 
-    <ion-label *ngIf="(searchResults.length == 0 && searchString != '') || searchResults.length == 0 && selectedGenres.length != 0">
-      No results
-    </ion-label>  
-
     <ion-list *ngIf="searchResults.length == 0 && showGenres == false && searchString == '' && selectedGenres.length == 0">
         <ng-container *ngFor="let a of animes">
-            <ion-item *ngIf="title_type == 'title_english'" (click)="moreInfo(a)">{{a.title_english}}</ion-item>
-            <ion-item *ngIf="title_type == 'title_japanese'" (click)="moreInfo(a)">{{a.title_japanese}}</ion-item>
-            <ion-item *ngIf="title_type == 'title_romaji'" (click)="moreInfo(a)">{{a.title_romaji}}</ion-item>
+            <ion-item *ngIf="title_type == 'title_english'" (click)="moreInfo(a)">{{ (a.title_english.length>40)? (a.title_english | slice:0:40)+'...':(a.title_english) }}</ion-item>
+            <ion-item *ngIf="title_type == 'title_japanese'" (click)="moreInfo(a)">{{ (a.title_japanese.length>40)? (a.title_japanese | slice:0:40)+'...':(a.title_japanese) }}</ion-item>
+            <ion-item *ngIf="title_type == 'title_romaji'" (click)="moreInfo(a)">{{ (a.title_romaji.length>40)? (a.title_romaji | slice:0:40)+'...':(a.title_romaji) }}</ion-item>
         </ng-container>
     </ion-list>
 
     <ion-list *ngIf="searchResults.length != 0 && showGenres == false">
       <ng-container *ngFor="let a of searchResults">
-          <ion-item *ngIf="title_type == 'title_english'" (click)="moreInfo(a)">{{a.title_english}}</ion-item>
-          <ion-item *ngIf="title_type == 'title_japanese'" (click)="moreInfo(a)">{{a.title_japanese}}</ion-item>
-          <ion-item *ngIf="title_type == 'title_romaji'" (click)="moreInfo(a)">{{a.title_romaji}}</ion-item>
+          <ion-item *ngIf="title_type == 'title_english'" (click)="moreInfo(a)">{{ (a.title_english.length>40)? (a.title_english | slice:0:40)+'...':(a.title_english) }}</ion-item>
+          <ion-item *ngIf="title_type == 'title_japanese'" (click)="moreInfo(a)">{{ (a.title_japanese.length>40)? (a.title_japanese | slice:0:40)+'...':(a.title_japanese) }}</ion-item>
+          <ion-item *ngIf="title_type == 'title_romaji'" (click)="moreInfo(a)">{{ (a.title_romaji.length>40)? (a.title_romaji | slice:0:40)+'...':(a.title_romaji) }}</ion-item>
       </ng-container>
     </ion-list>
 

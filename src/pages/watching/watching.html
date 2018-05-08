@@ -1,25 +1,14 @@
-<ion-header>
-
-  <ion-navbar>
-    <ion-title>Watching list</ion-title>
-  </ion-navbar>
-
-</ion-header>
-
-
-<ion-content padding>
-
-  <ion-label *ngIf="watching.length == 0">Watching list is empty.</ion-label>
+<ion-content padding class="newest">
 
   <ion-grid *ngIf="watching.length != 0">
     <ion-row>
       <ion-col col-6>
-        <ion-img width={{newest.image.width}} height={{newest.image.height}} src={{newest.image.url}}></ion-img>
+        <ion-img style="background-color: #05514E;" width={{newest.image.width}} height={{newest.image.height}} src={{newest.image.url}}></ion-img>
       </ion-col>
-      <ion-col>
-        <ion-row><ion-col col-6>{{newest.title}}</ion-col></ion-row>
-        <ion-row><ion-col col-6>Next episode:</ion-col></ion-row>
-        <ion-row><ion-col col-6>{{newest.time_left}}</ion-col></ion-row>
+      <ion-col col-6>
+        <ion-row class="newest-info"><ion-col>{{newest.title}}</ion-col></ion-row>
+        <ion-row><ion-col>Next episode in</ion-col></ion-row>
+        <ion-row><ion-col>{{newest.time_left}}</ion-col></ion-row>
       </ion-col>
     </ion-row>
   </ion-grid>
@@ -27,7 +16,8 @@
   <ion-grid *ngIf="watching.length != 0">
     <ion-item *ngFor="let a of watching">
       <ion-row>
-            <ion-col col-11 (click)="moreInfo(a)">{{a.title_english}} in {{counter(a.next_episode-now)}}</ion-col>
+            <ion-col col-6>{{ (a.title.length>15)? (a.title | slice:0:15)+'...':(a.title) }}</ion-col>
+            <ion-col col-5 style='text-align:right;'>{{a.time_left}}</ion-col>
             <ion-col col-1 (click)="remove(a)"><ion-icon name="md-close"></ion-icon></ion-col>
       </ion-row>
     </ion-item>

@@ -1,5 +1,21 @@
+.toast-message{
+    text-align: center;
+}
+
 .ticked{
-    background-color: rgb(162, 210, 224);
+    background-color: #517E7C !important;
+}
+
+.toolbar-background, .content, .item{
+    background-color: #05514E;
+    color:#669999;
+} 
+
+.newest-info {
+    font-weight: bold;
+    color: #669999;
+    font-size: 20px;
+    align-items: flex-end;
 }
 
 button[ion-fab] {
@@ -24,10 +40,10 @@ button[ion-fab] {
 }
 
 .token{
-    background-color: color($colors, primary);
+    background-color: #517E7C;
     border-radius: 40px;
     font-size: 14px;
-    color: #fff;
+    color: #39304A;
     padding: 10px;
     margin: 1px;
 }

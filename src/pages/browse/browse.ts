@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController, Checkbox } from 'ionic-angular';
+import { NavController, AlertController, Checkbox, ToastController } from 'ionic-angular';
 import { RestapiServiceProvider } from '../../providers/restapi-service/restapi-service';
 import { Storage } from '@ionic/storage';
 import { GlobalVars } from '../../app/globalVars';
@@ -27,7 +27,7 @@ export class BrowsePage {
     same:true,
     hour:new Date()
   }
-
+  toast = this.toastCtrl.create();
   // client_credentials:number = 403;
   // client_secret:string = 'gf66CF5kVIEhbyr5yKnweAVDxKxIZUmhuDQg8tTO';
 
@@ -40,7 +40,8 @@ export class BrowsePage {
     public storage: Storage,
     public globalVars: GlobalVars,
     public datePicker: DatePicker,
-    public alertCtrl: AlertController,) {
+    public alertCtrl: AlertController,
+    public toastCtrl: ToastController) {
 
       this.restApi.authorize({grant_type:"client_credentials",client_id:this.client_credentials,client_secret:this.client_secret}).then(data=>{
         this.response = data;
@@ -92,16 +93,17 @@ export class BrowsePage {
       }
     });
     this.selectedGenres.splice(this.selectedGenres.indexOf(genre_name),1);
-    this.searchByGenre();
+    if(this.showGenres == false) this.searchByGenre();
   }
 
   showCategories(){
+    this.dismissToast();
     this.getAnimes();
     this.showGenres = true;
   }
 
   searchByGenre(){
-    console.log('genres: '+this.selectedGenres);
+    this.searchString = '';
     let selectedAnimes:Array<any> = [];
     this.showGenres = false;
     this.animes.forEach(a=>{
@@ -109,16 +111,13 @@ export class BrowsePage {
       this.selectedGenres.forEach(g=>{
         if(a.genres.includes(g)){
           found++;
-          console.log(a.genres);
         }
       });
       if(found == this.selectedGenres.length){
-        console.log('found cat: '+a.genres);
         selectedAnimes.push(a);
       }
     });
     this.searchResults = selectedAnimes;
-    console.log(this.searchResults);
   }  
 
   search(){
@@ -128,11 +127,15 @@ export class BrowsePage {
         this.searchResults.push(a);
       }
     });
+    if(this.searchResults.length == 0)this.showToast("No results");
+    else this.toast.dismiss();
   }
 
   clearSearch(){
     this.searchResults = [];
     this.searchString = '';
+    this.toast.dismiss();
+    console.log('search bar cleared');
   }
 
   clearSelectedGenres(){
@@ -163,13 +166,13 @@ export class BrowsePage {
   }
 
   changeNotificationHour(){
+    this.dismissToast();
     this.storage.get('notification_hour').then(data=>{
       if (data == null){
         this.notification.same = true;
         this.notification.hour = new Date();
       }
       else this.notification = data;
-      console.log(this.notification);
       let hour = {
         h:this.notification.hour.getHours(),
         m:(this.notification.hour.getMinutes() < 10) ? "0"+this.notification.hour.getMinutes() : +this.notification.hour.getMinutes()
@@ -186,7 +189,7 @@ export class BrowsePage {
         ],
         buttons: [
           {
-            text: hour.h+":"+hour.m,
+            text: "Own hour - "+hour.h+":"+hour.m,
             handler: data => {
               this.datePicker.show({
                 date: new Date(),
@@ -238,4 +241,21 @@ export class BrowsePage {
     };
   }
 
+  dismissToast(){
+    this.toast.dismiss();
+  }
+
+  showToast(message:string) {
+    this.toast.dismiss();
+    this.toast = this.toastCtrl.create({
+      message: message,
+      duration: 30000,
+      position: 'middle',
+      cssClass: "toast-message",
+      dismissOnPageChange: true
+    });
+    this.toast.present();
+  }
+
 }
+

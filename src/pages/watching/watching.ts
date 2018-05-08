@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events, Platform } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events, Platform, ToastController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 
 @IonicPage()
@@ -16,33 +16,44 @@ export class WatchingPage {
     "time_left":'',
     "image":{"url":'',"width":0,"height":0}
   }
+  toast = this.toastCtrl.create();
 
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
     public storage: Storage,
     public event: Events,
-    public platform: Platform) {
+    public platform: Platform,
+    public toastCtrl:ToastController) {
       this.event.subscribe('refreshList',()=>{
         this.refreshList();
       });
-
+      setInterval(()=>{
+        this.refreshList();
+      },60000);
   }
 
   refreshList(){
+    this.toast.dismiss();
     this.storage.get('watching').then(data=>{
       if(data != null && data != ''){
         this.watching = data;
+        if(this.watching.length == 0)this.showToast("Watching list is empty");
         this.watching.sort(this.compareValues("next_episode",'asc'));
-        this.newest.title = this.watching[0].title_english;
+        this.newest.title = this.watching[0].title;
         this.newest.time_left = this.counter((this.watching[0].next_episode).valueOf() - new Date().valueOf());
         this.newest.image.url = this.watching[0].image.url;
         this.platform.ready().then((readySource) => {
           this.newest.image.width = this.platform.width()/3;
-          this.newest.image.height = this.watching[0].image.height - (this.watching[0].image.width - this.newest.image.width) - ((this.watching[0].image.width - this.newest.image.width)/2);
+          this.newest.image.height = this.watching[0].image.height - (this.watching[0].image.width - this.newest.image.width) - ((this.watching[0].image.width - this.newest.image.width)/3);
         });
+
+        this.watching.forEach(element=>{
+          element.time_left = this.counter(element.next_episode.valueOf() - new Date().valueOf());
+        })
       }
-console.log(this.newest);
+      else this.showToast("Watching list is empty");
+    console.log(this.watching);
     });
   }
   
@@ -88,8 +99,20 @@ compareValues(key, order='asc') {
   
   remove(anime){
     this.watching.splice(this.watching.indexOf(anime),1);
-    this.storage.set('watching',this.watching);
-    this.refreshList();
+    this.storage.set('watching',this.watching).then(()=>{
+      this.refreshList();
+    });
   }
 
+  showToast(message:string) {
+    this.toast.dismiss();
+    this.toast = this.toastCtrl.create({
+      message: message,
+      duration: 60000,
+      position: 'middle',
+      cssClass: "toast-message",
+      dismissOnPageChange: true
+    });
+    this.toast.present();
+  }
 }
