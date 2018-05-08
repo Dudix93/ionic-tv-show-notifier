@@ -7,6 +7,7 @@ import { RestapiServiceProvider } from '../providers/restapi-service/restapi-ser
 import { HttpModule } from '@angular/http';
 import { GlobalVars } from '../app/globalVars';
 import { DatePicker } from '@ionic-native/date-picker';
+import { RlTagInputModule } from 'angular2-tag-input';
 
 import { MyApp } from './app.component';
 import { TabsPage } from '../pages/tabs/tabs';
@@ -27,6 +28,7 @@ import { IonicStorageModule } from '@ionic/storage';
     BrowserModule,
     HttpModule,
     IonicStorageModule.forRoot(),
+    RlTagInputModule,
     IonicModule.forRoot(MyApp)
   ],
   bootstrap: [IonicApp],

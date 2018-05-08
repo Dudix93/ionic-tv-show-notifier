@@ -23,7 +23,6 @@ export class WatchingPage {
     public storage: Storage,
     public event: Events,
     public platform: Platform) {
-      this.refreshList();
       this.event.subscribe('refreshList',()=>{
         this.refreshList();
       });
@@ -43,7 +42,7 @@ export class WatchingPage {
           this.newest.image.height = this.watching[0].image.height - (this.watching[0].image.width - this.newest.image.width) - ((this.watching[0].image.width - this.newest.image.width)/2);
         });
       }
-
+console.log(this.newest);
     });
   }
   

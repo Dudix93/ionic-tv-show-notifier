@@ -1,13 +1,28 @@
 <ion-header>
   <ion-navbar>
-    <ion-input placeholder="Anime title" [(ngModel)]="searchString" (ngModelChange)="search()"></ion-input>
+    <!-- <ion-input placeholder="Anime title" [(ngModel)]="searchString" (ngModelChange)="search()"></ion-input>
     <ion-buttons end>
       <button ion-button *ngIf="searchString != ''" (click)="clearSearch()">Clear</button>
-    </ion-buttons>
+    </ion-buttons> -->
+    <ion-searchbar
+    [(ngModel)]="searchString"
+    [showCancelButton]="shouldShowCancel"
+    (ionInput)="search()"
+    (ionCancel)="clearSearch()"
+    placeholder="Search for anime">
+    </ion-searchbar>
     <button ion-button *ngIf="showGenres == false && selectedGenres.length != 0" (click)="showCategories()">Categories ({{selectedGenres.length}})</button>
     <button ion-button *ngIf="showGenres == false && selectedGenres.length == 0" (click)="showCategories()">Categories</button>
     <button ion-button *ngIf="showGenres == true" (click)="hideCategories()">Hide</button>
     <button ion-button *ngIf="selectedGenres.length != 0" (click)="clearCelectedGenres()">Clear</button>
+
+    <ion-grid>
+      <ion-row>
+          <ion-col col-4 *ngFor="let genre of selectedGenres" class="token">
+              {{genre}} <ion-icon float-right name="md-close"></ion-icon>
+          </ion-col>
+      </ion-row>
+    </ion-grid>
   </ion-navbar>
 </ion-header>
 
