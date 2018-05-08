@@ -69,7 +69,6 @@ export class BrowsePage {
 
   getGenres(){
     this.restApi.getGenres().then(data=>{
-      console.log(data);
       let gen:any = data;
       gen.forEach(g => {
         this.genres.push(new Genre(false,g.genre));
@@ -81,7 +80,6 @@ export class BrowsePage {
     this.genres.forEach(g=>{
       if(g.name == genre_name){
         g.selected = true;
-        console.log(g);
       }
     });
     this.selectedGenres.push(genre_name);
@@ -91,10 +89,10 @@ export class BrowsePage {
     this.genres.forEach(g=>{
       if(g.name == genre_name){
         g.selected = false;
-        console.log(g);
       }
     });
     this.selectedGenres.splice(this.selectedGenres.indexOf(genre_name),1);
+    this.searchByGenre();
   }
 
   showCategories(){
@@ -102,7 +100,8 @@ export class BrowsePage {
     this.showGenres = true;
   }
 
-  hideCategories(){
+  searchByGenre(){
+    console.log('genres: '+this.selectedGenres);
     let selectedAnimes:Array<any> = [];
     this.showGenres = false;
     this.animes.forEach(a=>{
@@ -110,15 +109,16 @@ export class BrowsePage {
       this.selectedGenres.forEach(g=>{
         if(a.genres.includes(g)){
           found++;
-          //console.log(a.genres);
+          console.log(a.genres);
         }
       });
       if(found == this.selectedGenres.length){
-        //console.log('found cat: '+a.genres);
+        console.log('found cat: '+a.genres);
         selectedAnimes.push(a);
       }
     });
-    this.animes = selectedAnimes;
+    this.searchResults = selectedAnimes;
+    console.log(this.searchResults);
   }  
 
   search(){
@@ -135,7 +135,7 @@ export class BrowsePage {
     this.searchString = '';
   }
 
-  clearCelectedGenres(){
+  clearSelectedGenres(){
     this.getAnimes();
     this.selectedGenres = [];
     this.genres.forEach(g=>{

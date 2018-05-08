@@ -1,9 +1,15 @@
-<ion-header>
+<!-- <ion-header>
   <ion-navbar>
-    <!-- <ion-input placeholder="Anime title" [(ngModel)]="searchString" (ngModelChange)="search()"></ion-input>
+    <ion-input placeholder="Anime title" [(ngModel)]="searchString" (ngModelChange)="search()"></ion-input>
     <ion-buttons end>
       <button ion-button *ngIf="searchString != ''" (click)="clearSearch()">Clear</button>
-    </ion-buttons> -->
+    </ion-buttons>
+
+  </ion-navbar>
+</ion-header> -->
+
+
+<ion-content padding>
     <ion-searchbar
     [(ngModel)]="searchString"
     [showCancelButton]="shouldShowCancel"
@@ -11,33 +17,24 @@
     (ionCancel)="clearSearch()"
     placeholder="Search for anime">
     </ion-searchbar>
-    <button ion-button *ngIf="showGenres == false && selectedGenres.length != 0" (click)="showCategories()">Categories ({{selectedGenres.length}})</button>
-    <button ion-button *ngIf="showGenres == false && selectedGenres.length == 0" (click)="showCategories()">Categories</button>
-    <button ion-button *ngIf="showGenres == true" (click)="hideCategories()">Hide</button>
-    <button ion-button *ngIf="selectedGenres.length != 0" (click)="clearCelectedGenres()">Clear</button>
-
-    <ion-grid>
-<<<<<<< HEAD
-      <ion-row>
-=======
-      <ion-row wrap>
->>>>>>> 5eb54fefdc4172443dbcdc40e6ce54b7182944db
-          <ion-col col-4 *ngFor="let genre of selectedGenres" class="token">
-              {{genre}} <ion-icon float-right name="md-close"></ion-icon>
-          </ion-col>
-      </ion-row>
-    </ion-grid>
-  </ion-navbar>
-</ion-header>
-
-
-<ion-content padding>
+    <button ion-button *ngIf="showGenres == true" (click)="searchByGenre()">Back</button>
+    <ion-grid *ngIf="selectedGenres.length != 0">
+        <ion-row>
+            <ion-col col-4 *ngFor="let genre of selectedGenres" class="token">
+                {{genre}} <ion-icon float-right name="md-close" (click)="unselectGenre(genre)"></ion-icon>
+            </ion-col>
+        </ion-row>
+      </ion-grid>
 
     <ion-fab bottom right >
         <button ion-fab>
           <ion-icon name="md-settings"></ion-icon>
         </button>
         <ion-fab-list side="top">
+            <button ion-fab (click)="showCategories()">
+                <ion-icon name="md-pricetag"></ion-icon>
+                <ion-label>Search by genres</ion-label>
+            </button>
           <button ion-fab (click)="changeTitleType()">
             <ion-icon name="md-quote"></ion-icon>
             <ion-label *ngIf="title_type == 'title_english'">English</ion-label>
@@ -68,11 +65,11 @@
       </ng-container>
     </ion-list>
 
-    <ion-label *ngIf="searchResults.length == 0 && showGenres == false && searchString != ''">
+    <ion-label *ngIf="(searchResults.length == 0 && searchString != '') || searchResults.length == 0 && selectedGenres.length != 0">
       No results
     </ion-label>  
 
-    <ion-list *ngIf="searchResults.length == 0 && showGenres == false && searchString == ''">
+    <ion-list *ngIf="searchResults.length == 0 && showGenres == false && searchString == '' && selectedGenres.length == 0">
         <ng-container *ngFor="let a of animes">
             <ion-item *ngIf="title_type == 'title_english'" (click)="moreInfo(a)">{{a.title_english}}</ion-item>
             <ion-item *ngIf="title_type == 'title_japanese'" (click)="moreInfo(a)">{{a.title_japanese}}</ion-item>
