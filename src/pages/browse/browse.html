@@ -17,7 +17,11 @@
     <button ion-button *ngIf="selectedGenres.length != 0" (click)="clearCelectedGenres()">Clear</button>
 
     <ion-grid>
+<<<<<<< HEAD
       <ion-row>
+=======
+      <ion-row wrap>
+>>>>>>> 5eb54fefdc4172443dbcdc40e6ce54b7182944db
           <ion-col col-4 *ngFor="let genre of selectedGenres" class="token">
               {{genre}} <ion-icon float-right name="md-close"></ion-icon>
           </ion-col>
