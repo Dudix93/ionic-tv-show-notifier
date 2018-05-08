@@ -22,3 +22,10 @@ button[ion-fab] {
 .fab {
     contain: layout;
 }
+
+.token{
+    background-color: color($colors, primary);
+    border-radius: 40px;
+    font-size: 14px;
+    color: #fff;
+}
