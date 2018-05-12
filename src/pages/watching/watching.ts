@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events, Platform, ToastController } from 'ionic-angular';
+import { NavController, NavParams, Events, Platform, ToastController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
+import { PhonegapLocalNotification } from '@ionic-native/phonegap-local-notification';
 
 declare let cordova:any
 
@@ -25,7 +26,8 @@ export class WatchingPage {
     public storage: Storage,
     public event: Events,
     public platform: Platform,
-    public toastCtrl:ToastController) {
+    public toastCtrl:ToastController,
+    public localNotification: PhonegapLocalNotification) {
       this.event.subscribe('refreshList',()=>{
         this.refreshList();
       });
@@ -36,6 +38,7 @@ export class WatchingPage {
       this.platform.ready().then((readySource) => {
         this.phoneNotification(1,'Twoje powiadomienie:',"wabalaba dub dub");
       });
+
   }
 
   refreshList(){

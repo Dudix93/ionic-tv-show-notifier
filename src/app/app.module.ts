@@ -17,6 +17,7 @@ import { WatchingPage } from '../pages/watching/watching';
 import { InfoPage } from '../pages/info/info';
 import { IonicStorageModule } from '@ionic/storage';
 import { LocalNotifications } from '@ionic-native/local-notifications'
+import { PhonegapLocalNotification } from '@ionic-native/phonegap-local-notification'
 
 const cloudSettings: CloudSettings = {
   'core': {
@@ -49,7 +50,8 @@ const cloudSettings: CloudSettings = {
     HttpModule,
     IonicStorageModule.forRoot(),
     RlTagInputModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    CloudModule.forRoot(cloudSettings)
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -66,6 +68,7 @@ const cloudSettings: CloudSettings = {
     GlobalVars,
     DatePicker,
     LocalNotifications,
+    PhonegapLocalNotification,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
