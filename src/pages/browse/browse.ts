@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController, Checkbox, ToastController } from 'ionic-angular';
+import { NavController, AlertController, ToastController } from 'ionic-angular';
 import { RestapiServiceProvider } from '../../providers/restapi-service/restapi-service';
 import { Storage } from '@ionic/storage';
 import { GlobalVars } from '../../app/globalVars';
