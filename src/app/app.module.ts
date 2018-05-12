@@ -8,6 +8,7 @@ import { HttpModule } from '@angular/http';
 import { GlobalVars } from '../app/globalVars';
 import { DatePicker } from '@ionic-native/date-picker';
 import { RlTagInputModule } from 'angular2-tag-input';
+import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
 
 import { MyApp } from './app.component';
 import { TabsPage } from '../pages/tabs/tabs';
@@ -15,6 +16,25 @@ import { BrowsePage } from '../pages/browse/browse';
 import { WatchingPage } from '../pages/watching/watching';
 import { InfoPage } from '../pages/info/info';
 import { IonicStorageModule } from '@ionic/storage';
+import { LocalNotifications } from '@ionic-native/local-notifications'
+
+const cloudSettings: CloudSettings = {
+  'core': {
+    'app_id': 'animunotifier'
+  },
+  'push': {
+    'sender_id': '160370676742',
+    'pluginConfig': {
+      'ios': {
+        'badge': true,
+        'sound': true
+      },
+      'android': {
+        'iconColor': '#343434'
+      }
+    }
+  }
+};
 
 @NgModule({
   declarations: [
@@ -45,6 +65,7 @@ import { IonicStorageModule } from '@ionic/storage';
     RestapiServiceProvider,
     GlobalVars,
     DatePicker,
+    LocalNotifications,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
