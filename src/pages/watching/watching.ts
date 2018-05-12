@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Events, Platform, ToastController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 
-@IonicPage()
+declare let cordova:any
+
 @Component({
   selector: 'page-watching',
   templateUrl: 'watching.html',
@@ -31,6 +32,10 @@ export class WatchingPage {
       setInterval(()=>{
         this.refreshList();
       },60000);
+
+      this.platform.ready().then((readySource) => {
+        this.phoneNotification(1,'Twoje powiadomienie:',"wabalaba dub dub");
+      });
   }
 
   refreshList(){
@@ -115,4 +120,12 @@ compareValues(key, order='asc') {
     });
     this.toast.present();
   }
+
+  phoneNotification(id:number,title:string,text:string){
+    cordova.plugins.notification.local.schedule({
+    id: id,
+    title: title,
+    text: text,
+  }); 
+}
 }

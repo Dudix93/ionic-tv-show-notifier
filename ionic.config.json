@@ -1,6 +1,6 @@
 {
   "name": "anime",
-  "app_id": "",
+  "app_id": "animunotifier",
   "type": "ionic-angular",
   "integrations": {
     "cordova": {}
