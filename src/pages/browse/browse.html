@@ -1,10 +1,14 @@
-<!-- <ion-header>
-  <ion-navbar>
-
-
-
-  </ion-navbar>
-</ion-header> -->
+<ion-header *ngIf="showGenres == true">
+    <ion-navbar>
+        <ion-buttons left>
+            <button ion-button icon-only (click)="searchByGenre()">
+                    <ion-icon name="md-arrow-round-back"></ion-icon>
+            </button>
+        </ion-buttons>
+        <ion-title *ngIf="selectedGenres.length != 0">Genres ({{selectedGenres.length}} selected)</ion-title>
+        <ion-title *ngIf="selectedGenres.length == 0">Genres</ion-title>
+    </ion-navbar>
+</ion-header>
 
 
 <ion-content padding>
@@ -22,12 +26,6 @@
             </ion-col>
         </ion-row>
     </ion-grid>
-
-    <ion-fab bottom right *ngIf="showGenres == true">
-        <button ion-fab (click)="searchByGenre()" style="background-color:#052B2A;">
-            <ion-icon name="md-arrow-round-back"></ion-icon>
-        </button>
-    </ion-fab>
 
     <ion-fab bottom right *ngIf="showGenres == false">
         <button ion-fab style="background-color:#052B2A;">

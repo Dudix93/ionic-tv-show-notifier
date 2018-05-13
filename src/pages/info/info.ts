@@ -15,10 +15,10 @@ export class InfoPage {
     "title_english":'',
     "title_romaji":'',
     "description":'',
-    "total_episodes":0,
     "next_episode":new Date(),
     "next_episode_date":'',
-    "image":{"url":'',"width":0,"height":0}
+    "image":{"url":'',"width":0,"height":0},
+    "episodes":{"total":0,"next":0,"unwatched":0}
   }
 
   list:Array<any> = []
@@ -46,16 +46,18 @@ export class InfoPage {
       }
     })
     let date:Date;
+    console.log(navParams.get('anime'));
     this.anime.id = navParams.get('anime').id;
     this.anime.title_english = navParams.get('anime').title_english;
     this.anime.title_romaji = navParams.get('anime').title_romaji;
     if(navParams.get('anime').description != null)this.anime.description = navParams.get('anime').description;
     else this.anime.description = "No description provided."
-    this.anime.total_episodes = navParams.get('anime').total_episodes;
+    this.anime.episodes.total = navParams.get('anime').total_episodes;
     this.anime.image.url = navParams.get('anime').image_url_lge;
     if(navParams.get('anime').airing != null){
       date = new Date(navParams.get('anime').airing.time);
       this.anime.next_episode = date;
+      this.anime.episodes.next = navParams.get('anime').airing.next_episode;
       this.anime.next_episode_date = date.getUTCDate().toString()+" - "+(date.getMonth()+1).toString()+" - "+date.getUTCFullYear().toString();
     }
     else{
@@ -72,7 +74,7 @@ export class InfoPage {
   }
 
   add(){
-    this.list.push(new AnimeWatching(this.anime.id,this.anime.title_english,this.anime.next_episode,0,this.anime.image));
+    this.list.push(new AnimeWatching(this.anime.id,this.anime.title_english,this.anime.next_episode,0,this.anime.image,this.anime.episodes));
     this.storage.set('watching',this.list);
     this.watching = true;
     this.showToast("The anime has been added to the list.");

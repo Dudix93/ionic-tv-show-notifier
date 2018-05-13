@@ -11,13 +11,15 @@
 </ion-header>
 
 
-<ion-content padding class="info">
+<ion-content padding>
 <div text-center>
       <ion-img width={{anime.image.width}} height={{anime.image.height}} src={{anime.image.url}}></ion-img>
 </div>
 
+<div class="info">
   <ion-item>{{anime.title_english}}</ion-item>
   <ion-item *ngIf="unselectable == false" text-wrap>Next episode: {{anime.next_episode_date}}</ion-item>
   <ion-item *ngIf="unselectable == true" text-wrap>No synopsis for next episode</ion-item>
   <ion-item text-wrap><p [innerHTML]="anime.description"></p></ion-item>
+</div>
 </ion-content>

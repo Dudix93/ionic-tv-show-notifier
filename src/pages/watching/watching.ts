@@ -77,7 +77,6 @@ export class WatchingPage {
           if(element.next_episode.valueOf() < new Date().valueOf()){
             this.api.getData(element.id).then(data=>{
               let anime:any = data;
-              console.log(new Date(anime.airing.time));
               this.watching[this.watching.indexOf(element)].time_left = this.newest.time_left = this.counter(new Date(anime.airing.time));
               this.watching[this.watching.indexOf(element)].next_episode = new Date(anime.airing.time);
               this.storage.set('watching',this.watching);
@@ -149,6 +148,20 @@ compareValues(key, order='asc') {
               this.refreshList();
             });
           }
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  moreInfo(anime){
+    let alert = this.alertCtrl.create({
+      title: anime.title,
+      message: "Next episode: "+anime.next_episode.getUTCDate()+"-"+(anime.next_episode.getUTCMonth()+1)+"-"+anime.next_episode.getFullYear()+"<br>Aired: "+(anime.episodes.next-1)+"/"+anime.episodes.total,
+      buttons: [
+        {
+          text: "Back",
+          role: "cancel"
         }
       ]
     });

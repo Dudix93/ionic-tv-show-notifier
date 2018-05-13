@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { NavController, AlertController, ToastController, LoadingController } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { NavController, AlertController, ToastController, LoadingController, Content } from 'ionic-angular';
 import { RestapiServiceProvider } from '../../providers/restapi-service/restapi-service';
 import { Storage } from '@ionic/storage';
 import { GlobalVars } from '../../app/globalVars';
@@ -11,7 +11,10 @@ import { DatePicker } from '@ionic-native/date-picker';
   selector: 'page-browse',
   templateUrl: 'browse.html'
 })
+
 export class BrowsePage {
+
+  //@ViewChild(Content) content: Content;
 
   animu:any;
   response:any;
@@ -57,7 +60,7 @@ export class BrowsePage {
       spinner: 'crescent',
       content: 'Fetching anime list...'
     });
-    loading.present();
+    if(this.showGenres == false)loading.present();
     this.animes = [];
     if(this.searchString != null && this.searchString != ''){
       this.searchString = this.searchString.toLocaleLowerCase();
@@ -104,11 +107,13 @@ export class BrowsePage {
 
   showCategories(){
     this.dismissToast();
-    this.getAnimes();
     this.showGenres = true;
+    this.getAnimes();
+    //this.content.resize();
   }
 
   searchByGenre(){
+    //this.content.resize();
     this.searchString = '';
     let selectedAnimes:Array<any> = [];
     this.showGenres = false;
