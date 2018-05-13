@@ -20,11 +20,7 @@ export class RestapiServiceProvider {
     if(token != null)headers.append("Authorization", "Bearer " + token);
     headers.append('Accept', 'application/vnd.api+json');
     headers.append('Content-Type', 'application/vnd.api+json');
-    //headers.append('Accept', 'text/xml, text/*');
-    //headers.append('Content-Type', 'text/xml, text/*');
     headers.append('Access-Control-Allow-Origin', '*');
-    // let encoded_value = btoa('animunotifier' + ":" + 'Elpsycongoro');
-    // headers.append("Authorization", "Basic " + encoded_value);
     headers.append("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     return new RequestOptions({headers:headers});
   }

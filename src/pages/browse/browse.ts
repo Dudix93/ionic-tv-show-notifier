@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController, ToastController } from 'ionic-angular';
+import { NavController, AlertController, ToastController, LoadingController } from 'ionic-angular';
 import { RestapiServiceProvider } from '../../providers/restapi-service/restapi-service';
 import { Storage } from '@ionic/storage';
 import { GlobalVars } from '../../app/globalVars';
@@ -41,11 +41,11 @@ export class BrowsePage {
     public globalVars: GlobalVars,
     public datePicker: DatePicker,
     public alertCtrl: AlertController,
-    public toastCtrl: ToastController) {
+    public toastCtrl: ToastController,
+    public loadingCtrl:LoadingController) {
 
       this.restApi.authorize({grant_type:"client_credentials",client_id:this.client_credentials,client_secret:this.client_secret}).then(data=>{
         this.response = data;
-        //console.log("token: "+this.response.json().access_token);
         this.globalVars.setToken(this.response.json().access_token);
         this.getAnimes();
         this.getGenres();
@@ -53,6 +53,11 @@ export class BrowsePage {
   }
 
   getAnimes(){
+    let loading = this.loadingCtrl.create({
+      spinner: 'crescent',
+      content: 'Fetching anime list...'
+    });
+    loading.present();
     this.animes = [];
     if(this.searchString != null && this.searchString != ''){
       this.searchString = this.searchString.toLocaleLowerCase();
@@ -66,6 +71,7 @@ export class BrowsePage {
         });
       });
     }
+    loading.dismiss();
   }
 
   getGenres(){

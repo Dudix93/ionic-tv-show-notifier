@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { AnimeWatching } from '../../models/animeWatching';
 
@@ -28,7 +28,8 @@ export class InfoPage {
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
-    public storage: Storage) {
+    public storage: Storage,
+    public toastCtrl: ToastController) {
     //console.log(navParams.get('anime'));
     this.storage.get('watching').then(data=>{
       this.list = data;
@@ -41,6 +42,7 @@ export class InfoPage {
       }
       else{
         this.storage.set('watching',[]);
+        this.list = [];
       }
     })
     let date:Date;
@@ -73,11 +75,24 @@ export class InfoPage {
     this.list.push(new AnimeWatching(this.anime.id,this.anime.title_english,this.anime.next_episode,0,this.anime.image));
     this.storage.set('watching',this.list);
     this.watching = true;
+    this.showToast("The anime has been added to the list.");
   }
 
   remove(){
     this.list.splice(this.list.indexOf(this.anime),1);
     this.storage.set('watching',this.list);
     this.watching = false;
+    this.showToast("The anime has been removed from the list.");
+  }
+
+  showToast(message:string) {
+    let toast = this.toastCtrl.create({
+      message: message,
+      duration: 3000,
+      position: 'bottom',
+      cssClass: "toast-message",
+      dismissOnPageChange: true
+    });
+    toast.present();
   }
 }

@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, Events, Platform, ToastController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { PhonegapLocalNotification } from '@ionic-native/phonegap-local-notification';
+import { RestapiServiceProvider } from '../../providers/restapi-service/restapi-service';
+import { GlobalVars } from '../../app/globalVars';
 
 declare let cordova:any
 
@@ -18,7 +20,10 @@ export class WatchingPage {
     "time_left":'',
     "image":{"url":'',"width":0,"height":0}
   }
+  client_credentials:string = 'animunotifier-j0ybs';
+  client_secret:string = 'UqdeljBAhwnTPoT5TPV';
   toast = this.toastCtrl.create();
+  response:any
 
   constructor(
     public navCtrl: NavController, 
@@ -27,17 +32,28 @@ export class WatchingPage {
     public event: Events,
     public platform: Platform,
     public toastCtrl:ToastController,
-    public localNotification: PhonegapLocalNotification) {
+    public localNotification: PhonegapLocalNotification,
+    public api: RestapiServiceProvider,
+    public globalVars: GlobalVars) {
+      this.api.authorize({grant_type:"client_credentials",client_id:this.client_credentials,client_secret:this.client_secret}).then(data=>{
+        this.response = data;
+        this.globalVars.setToken(this.response.json().access_token);
+        this.refreshList();
+      });
+
       this.event.subscribe('refreshList',()=>{
         this.refreshList();
       });
+
       setInterval(()=>{
         this.refreshList();
       },60000);
 
-      this.platform.ready().then((readySource) => {
-        this.phoneNotification(1,'Twoje powiadomienie:',"wabalaba dub dub");
-      });
+      if(this.platform.is('cordova')){
+        this.platform.ready().then((readySource) => {
+          this.phoneNotification(1,'Twoje powiadomienie:',"wabalaba dub dub");
+        });
+      }
 
   }
 
@@ -49,7 +65,7 @@ export class WatchingPage {
         if(this.watching.length == 0)this.showToast("Watching list is empty");
         this.watching.sort(this.compareValues("next_episode",'asc'));
         this.newest.title = this.watching[0].title;
-        this.newest.time_left = this.counter((this.watching[0].next_episode).valueOf() - new Date().valueOf());
+        this.newest.time_left = this.counter(this.watching[0].next_episode);
         this.newest.image.url = this.watching[0].image.url;
         this.platform.ready().then((readySource) => {
           this.newest.image.width = this.platform.width()/3;
@@ -57,15 +73,24 @@ export class WatchingPage {
         });
 
         this.watching.forEach(element=>{
-          element.time_left = this.counter(element.next_episode.valueOf() - new Date().valueOf());
+          if(element.next_episode.valueOf() < new Date().valueOf()){
+            this.api.getData(element.id).then(data=>{
+              let anime:any = data;
+              console.log(new Date(anime.airing.time));
+              this.watching[this.watching.indexOf(element)].time_left = this.newest.time_left = this.counter(new Date(anime.airing.time));
+              this.watching[this.watching.indexOf(element)].next_episode = new Date(anime.airing.time);
+              this.storage.set('watching',this.watching);
+            });
+          }
+          element.time_left = this.counter(element.next_episode);
         })
       }
       else this.showToast("Watching list is empty");
-    console.log(this.watching);
     });
   }
   
-  counter(t){
+  counter(ne){
+    let t = ne.valueOf() - new Date().valueOf();
     let cd = 24 * 60 * 60 * 1000,
         ch = 60 * 60 * 1000,
         d = Math.floor(t / cd),
