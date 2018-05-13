@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Events, Platform, ToastController } from 'ionic-angular';
+import { NavController, NavParams, Events, Platform, ToastController, AlertController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { PhonegapLocalNotification } from '@ionic-native/phonegap-local-notification';
 import { RestapiServiceProvider } from '../../providers/restapi-service/restapi-service';
@@ -32,6 +32,7 @@ export class WatchingPage {
     public event: Events,
     public platform: Platform,
     public toastCtrl:ToastController,
+    public alertCtrl:AlertController,
     public localNotification: PhonegapLocalNotification,
     public api: RestapiServiceProvider,
     public globalVars: GlobalVars) {
@@ -130,10 +131,28 @@ compareValues(key, order='asc') {
 }
   
   remove(anime){
-    this.watching.splice(this.watching.indexOf(anime),1);
-    this.storage.set('watching',this.watching).then(()=>{
-      this.refreshList();
+    let alert = this.alertCtrl.create({
+      title: anime.title,
+      inputs: [
+      ],
+      buttons: [
+        {
+          text: "Back",
+          role: "cancel"
+        },
+        {
+          text: "Remove",
+          handler: () => {
+            this.watching.splice(this.watching.indexOf(anime),1);
+            this.removedToast(anime.title+" has been removed from the list");
+            this.storage.set('watching',this.watching).then(()=>{
+              this.refreshList();
+            });
+          }
+        }
+      ]
     });
+    alert.present();
   }
 
   showToast(message:string) {
@@ -146,6 +165,16 @@ compareValues(key, order='asc') {
       dismissOnPageChange: true
     });
     this.toast.present();
+  }
+
+  removedToast(message:string) {
+    let toast = this.toastCtrl.create({
+      message: message,
+      duration: 3000,
+      position: 'bottom',
+      cssClass: "toast-message",
+    });
+    toast.present();
   }
 
   phoneNotification(id:number,title:string,text:string){
