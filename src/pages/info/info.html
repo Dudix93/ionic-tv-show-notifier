@@ -2,7 +2,7 @@
 
   <ion-navbar>
     <ion-title>More info</ion-title>
-    <ion-buttons *ngIf="unselectable == false" end>
+    <ion-buttons [hidden]="unselectable == true" end>
       <button ion-button color="danger" *ngIf="watching == true" (click)="remove()">Remove</button>
       <button ion-button color="secondary" *ngIf="watching == false" (click)="add()">Add</button>
     </ion-buttons>
