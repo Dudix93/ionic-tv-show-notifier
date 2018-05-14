@@ -28,35 +28,26 @@ After an title of choice selection, the full title, the next episode date and th
 |![watching](screenshots/watching.png)|![watching info](screenshots/watching_info.png)|
 |--|--|
 
-#
 
 The 'Browse' tab allows to browse through the currently airing animes, searching by typed phrase as well as access to various settings. 
 
 |![browse](screenshots/browse.png)|![english titles](screenshots/search.png)|
 |--|--|
 
-#
-
 The animes can be browsed by genres of choice as well.
 
 |![romaji titles](screenshots/genres.png)|![japanese titles](screenshots/genres_search.png)|
 |--|--|
-
-#
 
 Displayed titles can both in english or romanji as well as japanese.
 
 |![english titles](screenshots/english.png)|![romaji titles](screenshots/romaji.png)|![japanese titles](screenshots/japanese.png)|
 |--|--|--|
 
-#
-
 After the title selection, more info is displayed afterwards, such as cover, full title, next episode airing date as well as the anime's description. In this place the new title can be added to the watching list.
 
 |![english titles](screenshots/info1.png)|![romaji titles](screenshots/info2.png)|![japanese titles](screenshots/add.png)|
 |--|--|--|
-
-#
 
 The user can choose when he/she would like to receive the new notification (at the same time as the premiere or later on in the selected hour).
 
