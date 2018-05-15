@@ -15,6 +15,8 @@
 
 The app allows to browse through currently airing animes (using online rest api) and create an custom list of titles of user's choice. Based on that, the app user will receive an mobile notification each time when an new episode will be aired. The notification time preferences can be changed (it can appear on real airing date and time or custom hour after premiere). The app provides an various search options as well. 
 
+I'm considering linking the app with the firebase database. It would provide a personal account held online and login system. I would implement the friends system, where You could follow the others's lists and get recomendations based on their activity.
+
 More info alongside with screenshots below.
 
 #
