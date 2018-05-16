@@ -5,7 +5,7 @@ import { PhonegapLocalNotification } from '@ionic-native/phonegap-local-notifica
 import { RestapiServiceProvider } from '../../providers/restapi-service/restapi-service';
 import { UserService } from '../../providers/user-service/user-service';
 import { GlobalVars } from '../../app/globalVars';
-import { AngularFireDatabase } from 'angularfire2/database';
+import { AngularFireDatabase, snapshotChanges } from 'angularfire2/database';
 import { User } from '../../models/user';
 
 declare let cordova:any
@@ -41,7 +41,12 @@ export class WatchingPage {
     public globalVars: GlobalVars,
     public db: AngularFireDatabase,
     public userService: UserService) {
-      //this.userService.addUser(new User(db.createPushId(),"dodo","dodo123"));
+      this.userService.addUser(new User(db.createPushId(),"dodo","dodo123"));
+      this.db.database.ref('users').once('value').then(snapshot=>{
+        snapshot.forEach(element => {
+          console.log(element.val());
+        });
+      })
       this.api.authorize({grant_type:"client_credentials",client_id:this.client_credentials,client_secret:this.client_secret}).then(data=>{
         this.response = data;
         this.globalVars.setToken(this.response.json().access_token);
@@ -59,7 +64,10 @@ export class WatchingPage {
   }
 
   refreshList(){
-    this.toast.dismiss();
+    if(this.toast != null){
+      this.toast.dismiss();
+      this.toast = null;
+    }
     this.storage.get('watching').then(data=>{
       if(data != null && data != ''){
         this.watching = data;
@@ -169,7 +177,7 @@ compareValues(key, order='asc') {
   }
 
   showToast(message:string) {
-    this.toast.dismiss();
+    if(this.toast != null)this.toast.dismiss();
     this.toast = this.toastCtrl.create({
       message: message,
       duration: 60000,

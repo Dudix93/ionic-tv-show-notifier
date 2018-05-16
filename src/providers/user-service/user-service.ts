@@ -9,7 +9,7 @@ export class UserService {
  
     constructor(private db: AngularFireDatabase) { }
  
-    getUser() {
+    getUsers() {
         return this.userRef;
     }
  
