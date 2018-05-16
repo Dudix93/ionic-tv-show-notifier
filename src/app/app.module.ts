@@ -18,6 +18,10 @@ import { InfoPage } from '../pages/info/info';
 import { IonicStorageModule } from '@ionic/storage';
 import { LocalNotifications } from '@ionic-native/local-notifications'
 import { PhonegapLocalNotification } from '@ionic-native/phonegap-local-notification'
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { FIREBASE_CONFIG } from './firebase.credentials';
+import { UserService } from '../providers/user-service/user-service';
 
 const cloudSettings: CloudSettings = {
   'core': {
@@ -51,7 +55,9 @@ const cloudSettings: CloudSettings = {
     IonicStorageModule.forRoot(),
     RlTagInputModule,
     IonicModule.forRoot(MyApp),
-    CloudModule.forRoot(cloudSettings)
+    CloudModule.forRoot(cloudSettings),
+    AngularFireModule.initializeApp(FIREBASE_CONFIG),
+    AngularFireDatabaseModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -70,6 +76,7 @@ const cloudSettings: CloudSettings = {
     LocalNotifications,
     PhonegapLocalNotification,
     Content,
+    UserService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
