@@ -3,7 +3,8 @@ import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angu
 import { Storage } from '@ionic/storage';
 import { AnimeWatching } from '../../models/animeWatching';
 
-@IonicPage()
+declare let cordova:any
+
 @Component({
   selector: 'page-info',
   templateUrl: 'info.html',
@@ -77,10 +78,12 @@ export class InfoPage {
     this.list.push(new AnimeWatching(this.anime.id,this.anime.title_english,this.anime.next_episode,0,this.anime.image,this.anime.episodes));
     this.storage.set('watching',this.list);
     this.watching = true;
+    this.phoneNotification(this.anime.id,this.anime.title_english,this.anime.next_episode);
     this.showToast("The anime has been added to the list.");
   }
 
   remove(){
+    cordova.plugins.notification.local.cancel(this.anime.id);
     this.list.splice(this.list.indexOf(this.anime),1);
     this.storage.set('watching',this.list);
     this.watching = false;
@@ -97,4 +100,13 @@ export class InfoPage {
     });
     toast.present();
   }
+
+  phoneNotification(id:number,title:string,date:Date){
+    cordova.plugins.notification.local.schedule({
+    id: id,
+    title: "New episode",
+    text: "An new episode of "+title+" has arrived",
+    trigger: {at: date}
+  }); 
+}
 }

@@ -195,6 +195,7 @@ compareValues(key, order='asc') {
     id: id,
     title: title,
     text: text,
+    trigger: {at: new Date().setSeconds(new Date().getSeconds()+15)}
   }); 
 }
 }
