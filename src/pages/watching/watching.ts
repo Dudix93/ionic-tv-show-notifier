@@ -3,7 +3,10 @@ import { NavController, NavParams, Events, Platform, ToastController, AlertContr
 import { Storage } from '@ionic/storage';
 import { PhonegapLocalNotification } from '@ionic-native/phonegap-local-notification';
 import { RestapiServiceProvider } from '../../providers/restapi-service/restapi-service';
+import { UserService } from '../../providers/user-service/user-service';
 import { GlobalVars } from '../../app/globalVars';
+import { AngularFireDatabase, snapshotChanges } from 'angularfire2/database';
+import { User } from '../../models/user';
 
 declare let cordova:any
 
@@ -35,7 +38,15 @@ export class WatchingPage {
     public alertCtrl:AlertController,
     public localNotification: PhonegapLocalNotification,
     public api: RestapiServiceProvider,
-    public globalVars: GlobalVars) {
+    public globalVars: GlobalVars,
+    public db: AngularFireDatabase,
+    public userService: UserService) {
+      this.userService.addUser(new User(db.createPushId(),"dodo","dodo123"));
+      this.db.database.ref('users').once('value').then(snapshot=>{
+        snapshot.forEach(element => {
+          console.log(element.val());
+        });
+      })
       this.api.authorize({grant_type:"client_credentials",client_id:this.client_credentials,client_secret:this.client_secret}).then(data=>{
         this.response = data;
         this.globalVars.setToken(this.response.json().access_token);
@@ -50,16 +61,13 @@ export class WatchingPage {
         this.refreshList();
       },60000);
 
-      if(this.platform.is('cordova')){
-        this.platform.ready().then((readySource) => {
-          this.phoneNotification(1,'Twoje powiadomienie:',"wabalaba dub dub");
-        });
-      }
-
   }
 
   refreshList(){
-    this.toast.dismiss();
+    if(this.toast != null){
+      this.toast.dismiss();
+      this.toast = null;
+    }
     this.storage.get('watching').then(data=>{
       if(data != null && data != ''){
         this.watching = data;
@@ -169,7 +177,7 @@ compareValues(key, order='asc') {
   }
 
   showToast(message:string) {
-    this.toast.dismiss();
+    if(this.toast != null)this.toast.dismiss();
     this.toast = this.toastCtrl.create({
       message: message,
       duration: 60000,

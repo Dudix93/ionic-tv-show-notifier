@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
+import { NavController, NavParams, ToastController, Platform } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { AnimeWatching } from '../../models/animeWatching';
 
@@ -30,8 +30,8 @@ export class InfoPage {
     public navCtrl: NavController, 
     public navParams: NavParams,
     public storage: Storage,
-    public toastCtrl: ToastController) {
-    //console.log(navParams.get('anime'));
+    public toastCtrl: ToastController,
+    public platform: Platform) {
     this.storage.get('watching').then(data=>{
       this.list = data;
       if(this.list != null){
@@ -102,11 +102,17 @@ export class InfoPage {
   }
 
   phoneNotification(id:number,title:string,date:Date){
-    cordova.plugins.notification.local.schedule({
-    id: id,
-    title: "New episode",
-    text: "An new episode of "+title+" has arrived",
-    trigger: {at: date}
-  }); 
+    console.log(new Date());
+    console.log(date);
+    if(this.platform.is('cordova')){
+      this.platform.ready().then((readySource) => {
+        cordova.plugins.notification.local.schedule({
+          id: id,
+          title: "New episode",
+          text: "An new episode of "+title+" has arrived",
+          trigger: {at: date}
+        }); 
+      });
+    }
 }
 }
