@@ -14,7 +14,9 @@ import { MyApp } from './app.component';
 import { TabsPage } from '../pages/tabs/tabs';
 import { BrowsePage } from '../pages/browse/browse';
 import { WatchingPage } from '../pages/watching/watching';
+import { LoginPage } from '../pages/login/login';
 import { InfoPage } from '../pages/info/info';
+import { PopoverPage } from '../pages/popover/popover';
 import { IonicStorageModule } from '@ionic/storage';
 import { LocalNotifications } from '@ionic-native/local-notifications'
 import { PhonegapLocalNotification } from '@ionic-native/phonegap-local-notification'
@@ -46,8 +48,10 @@ const cloudSettings: CloudSettings = {
     MyApp,
     BrowsePage,
     WatchingPage,
+    LoginPage,
     InfoPage,
-    TabsPage
+    TabsPage,
+    PopoverPage
   ],
   imports: [
     BrowserModule,
@@ -64,8 +68,10 @@ const cloudSettings: CloudSettings = {
     MyApp,
     BrowsePage,
     WatchingPage,
+    LoginPage,
     InfoPage,
-    TabsPage
+    TabsPage,
+    PopoverPage
   ],
   providers: [
     StatusBar,

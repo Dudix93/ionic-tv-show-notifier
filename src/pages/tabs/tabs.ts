@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { BrowsePage } from '../browse/browse';
 import { WatchingPage } from '../watching/watching';
+import { LoginPage } from '../login/login';
 import { Events } from 'ionic-angular';
 
 @Component({

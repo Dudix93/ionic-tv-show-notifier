@@ -102,8 +102,6 @@ export class InfoPage {
   }
 
   phoneNotification(id:number,title:string,date:Date){
-    console.log(new Date());
-    console.log(date);
     if(this.platform.is('cordova')){
       this.platform.ready().then((readySource) => {
         cordova.plugins.notification.local.schedule({
@@ -112,6 +110,18 @@ export class InfoPage {
           text: "An new episode of "+title+" has arrived",
           trigger: {at: date}
         }); 
+        cordova.plugins.notification.local.on('trigger',()=>{
+          let watching;
+          this.storage.get('watching').then(data=>{
+            watching = data;
+            watching.forEach(element => {
+              if(element.id == id){
+                element.episodes.unwatched++;
+                this.storage.set('watching',watching);
+              }
+            });
+          })
+        })
       });
     }
 }

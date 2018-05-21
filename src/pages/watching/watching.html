@@ -1,3 +1,14 @@
+<ion-header>
+  <ion-navbar>
+      <ion-buttons right>
+          <button ion-button icon-only (click)="presentPopover($event)">
+                  <ion-icon name="md-notifications"></ion-icon>
+          </button>
+      </ion-buttons>
+      <ion-title>Your animes</ion-title>
+  </ion-navbar>
+</ion-header>
+
 <ion-content padding>
 
   <ion-grid *ngIf="watching.length != 0">
@@ -16,9 +27,9 @@
   <ion-grid *ngIf="watching.length != 0">
     <ion-item *ngFor="let a of watching">
       <ion-row style="font-size:14px;">
-            <ion-col col-7 *ngIf="a.episodes.total == 0" (click)="moreInfo(a)">{{ (a.title.length>18)? (a.title | slice:0:18)+'...':(a.title) }}</ion-col>
-            <ion-col col-5 *ngIf="a.episodes.total > 0" (click)="moreInfo(a)">{{ (a.title.length>14)? (a.title | slice:0:14)+'...':(a.title) }}</ion-col>
-            <ion-col col-2 *ngIf="a.episodes.total > 0">{{a.episodes.next}} <ion-icon name="md-flag"></ion-icon></ion-col>
+            <ion-col col-7 *ngIf="a.episodes.unwatched == 0" (click)="moreInfo(a)">{{ (a.title.length>18)? (a.title | slice:0:18)+'...':(a.title) }}</ion-col>
+            <ion-col col-5 *ngIf="a.episodes.unwatched > 0" (click)="moreInfo(a)">{{ (a.title.length>14)? (a.title | slice:0:14)+'...':(a.title) }}</ion-col>
+            <ion-col col-2 *ngIf="a.episodes.unwatched > 0">{{a.episodes.unwatched}} <ion-icon name="md-flag"></ion-icon></ion-col>
             <ion-col col-4 style="text-align:right;">{{a.time_left}}</ion-col>
             <ion-col col-1 (click)="remove(a)"><ion-icon name="md-close"></ion-icon></ion-col>
       </ion-row>

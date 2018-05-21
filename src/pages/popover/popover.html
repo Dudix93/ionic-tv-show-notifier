@@ -1,0 +1,13 @@
+<ion-list>
+  <ion-item class="popover">
+    <ion-label><ion-icon name="md-volume-up"></ion-icon> Sound</ion-label>
+    <ion-toggle [(ngModel)]="sound"></ion-toggle>
+  </ion-item>
+  <ion-item class="popover">
+    <ion-label><ion-icon name="ios-radio-outline"></ion-icon> Vibration</ion-label>
+    <ion-toggle [(ngModel)]="vibrate"></ion-toggle>
+  </ion-item>
+  <ion-item class="popover">
+    <button item-right ion-button (click)="changeNotificationSettings()">Save</button>
+  </ion-item>
+</ion-list>

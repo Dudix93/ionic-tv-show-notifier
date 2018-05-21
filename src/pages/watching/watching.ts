@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Events, Platform, ToastController, AlertController } from 'ionic-angular';
+import { NavController, NavParams, Events, Platform, ToastController, AlertController, PopoverController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { PhonegapLocalNotification } from '@ionic-native/phonegap-local-notification';
 import { RestapiServiceProvider } from '../../providers/restapi-service/restapi-service';
 import { UserService } from '../../providers/user-service/user-service';
 import { GlobalVars } from '../../app/globalVars';
-import { AngularFireDatabase, snapshotChanges } from 'angularfire2/database';
+import { AngularFireDatabase } from 'angularfire2/database';
 import { User } from '../../models/user';
+import { PopoverPage } from '../../pages/popover/popover'
 
 declare let cordova:any
 
@@ -40,13 +41,14 @@ export class WatchingPage {
     public api: RestapiServiceProvider,
     public globalVars: GlobalVars,
     public db: AngularFireDatabase,
-    public userService: UserService) {
-      this.userService.addUser(new User(db.createPushId(),"dodo","dodo123"));
+    public userService: UserService,
+    public popoverCtrl: PopoverController) {
+      //this.userService.addUser(new User(db.createPushId(),"dodo","dodo123"));
       this.db.database.ref('users').once('value').then(snapshot=>{
         snapshot.forEach(element => {
           console.log(element.val());
         });
-      })
+      });
       this.api.authorize({grant_type:"client_credentials",client_id:this.client_credentials,client_secret:this.client_secret}).then(data=>{
         this.response = data;
         this.globalVars.setToken(this.response.json().access_token);
@@ -163,6 +165,7 @@ compareValues(key, order='asc') {
   }
 
   moreInfo(anime){
+    console.log(anime);
     let alert = this.alertCtrl.create({
       title: anime.title,
       message: "Next episode: "+anime.next_episode.getUTCDate()+"-"+(anime.next_episode.getUTCMonth()+1)+"-"+anime.next_episode.getFullYear()+"<br>Aired: "+(anime.episodes.next-1)+"/"+anime.episodes.total,
@@ -174,6 +177,29 @@ compareValues(key, order='asc') {
       ]
     });
     alert.present();
+
+    if(this.platform.is('cordova')){
+      this.platform.ready().then((readySource) => {
+        cordova.plugins.notification.local.schedule({
+          id: anime.id,
+          title: "New episode",
+          text: "An new episode of "+anime.title+" has arrived"
+        }); 
+        cordova.plugins.notification.local.on('trigger',()=>{
+          let watching;
+          this.storage.get('watching').then(data=>{
+            watching = data;
+            watching.forEach(element => {
+              if(element.id == anime.id){
+                console.log(element);
+                element.episodes.unwatched++;
+                this.storage.set('watching',watching);
+              }
+            });
+          })
+        })
+      });
+    }
   }
 
   showToast(message:string) {
@@ -205,5 +231,12 @@ compareValues(key, order='asc') {
     text: text,
     trigger: {at: new Date().setSeconds(new Date().getSeconds()+15)}
   }); 
-}
+  }
+
+  presentPopover(myEvent) {
+    let popover = this.popoverCtrl.create(PopoverPage);
+    popover.present({
+      ev: myEvent
+    });
+  }
 }
