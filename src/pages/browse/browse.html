@@ -27,7 +27,7 @@
         </ion-row>
     </ion-grid>
 
-    <ion-fab bottom right *ngIf="showGenres == false">
+    <ion-fab bottom right #fab *ngIf="showGenres == false">
         <button ion-fab style="background-color:#052B2A;">
           <ion-icon name="md-settings"></ion-icon>
         </button>
@@ -39,26 +39,29 @@
                 <ion-icon name="md-pricetag"></ion-icon>
                 <ion-label>Search by genres</ion-label>
             </button>
-          <button ion-fab (click)="changeTitleType()">
-            <ion-icon name="md-quote"></ion-icon>
-            <ion-label *ngIf="title_type == 'title_english'">English</ion-label>
-            <ion-label *ngIf="title_type == 'title_japanese'">Japanese</ion-label>
-            <ion-label *ngIf="title_type == 'title_romaji'">Romaji</ion-label>
-          </button>
-          <button ion-fab (click)="changeOrder()">
-            <ng-container *ngIf="order == 'asc'">
-                <ion-icon name="md-trending-down"></ion-icon>
-                <ion-label>Order A-Z</ion-label>
-            </ng-container>
-            <ng-container *ngIf="order == 'desc'">
-                <ion-icon name="md-trending-up"></ion-icon>
-                <ion-label>Order Z-A</ion-label>
-            </ng-container>
-          </button>
-          <button ion-fab (click)="changeNotificationHour()">
-              <ion-icon name="md-alarm"></ion-icon>
-              <ion-label>Notification hour</ion-label>
-          </button>
+
+            <button ion-fab (click)="changeTitleType(fab)">
+                <ion-icon name="md-quote"></ion-icon>
+                <ion-label *ngIf="title_type == 'title_english'">English</ion-label>
+                <ion-label *ngIf="title_type == 'title_japanese'">Japanese</ion-label>
+                <ion-label *ngIf="title_type == 'title_romaji'">Romaji</ion-label>
+            </button>
+
+            <button ion-fab (click)="changeOrder(fab)">
+                <ng-container *ngIf="order == 'asc'">
+                    <ion-icon name="md-trending-down"></ion-icon>
+                    <ion-label>Order A-Z</ion-label>
+                </ng-container>
+                <ng-container *ngIf="order == 'desc'">
+                    <ion-icon name="md-trending-up"></ion-icon>
+                    <ion-label>Order Z-A</ion-label>
+                </ng-container>
+            </button>
+
+            <button ion-fab (click)="changeNotificationHour(fab)">
+                <ion-icon name="md-alarm"></ion-icon>
+                <ion-label>Notification hour</ion-label>
+            </button>
         </ion-fab-list>
       </ion-fab>
 

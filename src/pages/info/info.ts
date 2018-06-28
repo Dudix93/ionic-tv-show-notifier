@@ -108,7 +108,8 @@ export class InfoPage {
           id: id,
           title: "New episode",
           text: "An new episode of "+title+" has arrived",
-          trigger: {at: date}
+          at: date,
+          every: 'week'
         }); 
         cordova.plugins.notification.local.on('trigger',()=>{
           let watching;

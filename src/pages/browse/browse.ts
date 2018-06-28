@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, AlertController, ToastController, LoadingController, Content } from 'ionic-angular';
+import { NavController, AlertController, ToastController, LoadingController, Content, FabContainer } from 'ionic-angular';
 import { RestapiServiceProvider } from '../../providers/restapi-service/restapi-service';
 import { Storage } from '@ionic/storage';
 import { GlobalVars } from '../../app/globalVars';
@@ -163,20 +163,22 @@ export class BrowsePage {
     });
   }
 
-  changeOrder(){
+  changeOrder(fab: FabContainer){
     if(this.order == 'asc')this.order = 'desc'
     else this.order = 'asc'
     if(this.searchResults.length != 0)this.searchResults.sort(this.compareValues(this.title_type,this.order));
     else this.animes.sort(this.compareValues(this.title_type,this.order));
+    fab.close();
   }
 
-  changeTitleType(){
+  changeTitleType(fab: FabContainer){
     if(this.title_type == 'title_romaji')this.title_type = 'title_japanese'
     else if(this.title_type == 'title_japanese')this.title_type = 'title_english'
     else this.title_type = 'title_romaji'
+    fab.close();
   }
 
-  changeNotificationHour(){
+  changeNotificationHour(fab: FabContainer){
     this.dismissToast();
     this.storage.get('notification_hour').then(data=>{
       if (data == null){
@@ -230,6 +232,7 @@ export class BrowsePage {
       });
       alert.present();
     });
+    fab.close();
   }
 
   compareValues(key, order = 'asc') {

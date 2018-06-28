@@ -85,5 +85,6 @@
     <plugin name="cordova-plugin-datepicker" spec="^0.9.3" />
     <plugin name="phonegap-plugin-local-notification" spec="^1.0.1" />
     <plugin name="cordova-plugin-local-notification" spec="https://github.com/katzer/cordova-plugin-local-notifications.git" />
+    <plugin name="cordova-plugin-background-mode" spec="^0.7.2" />
     <engine name="android" spec="^7.1.0" />
 </widget>

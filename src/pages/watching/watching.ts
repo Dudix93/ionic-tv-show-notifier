@@ -63,6 +63,7 @@ export class WatchingPage {
         this.refreshList();
       },60000);
 
+      //cordova.plugins.backgroundMode.enable();
   }
 
   refreshList(){
