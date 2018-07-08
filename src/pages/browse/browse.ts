@@ -138,8 +138,6 @@ export class BrowsePage {
         this.searchResults.push(a);
       }
     });
-    if(this.searchResults.length == 0)this.showToast("No results");
-    else this.toast.dismiss();
   }
 
   clearSearch(){

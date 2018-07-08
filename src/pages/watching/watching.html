@@ -11,6 +11,10 @@
 
 <ion-content padding>
 
+  <div class='warning' *ngIf="watching.length == 0">
+    <span>Your watching list is empty</span>
+  </div>
+  
   <ion-grid *ngIf="watching.length != 0">
     <ion-row>
       <ion-col col-6>

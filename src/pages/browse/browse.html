@@ -65,6 +65,10 @@
         </ion-fab-list>
       </ion-fab>
 
+      <div class='warning' *ngIf="(searchResults.length == 0 && showGenres == false && searchString != '') || (searchResults.length == 0 && showGenres == false && selectedGenres.length != 0)">
+            <span>No results</span>
+        </div>
+
     <ion-list *ngIf="showGenres == true">
       <ng-container *ngFor="let g of genres">
           <ion-item *ngIf="g.selected == false" (click)="selectGenre(g.name)">{{g.name}}</ion-item>

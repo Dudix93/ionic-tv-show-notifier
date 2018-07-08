@@ -96,7 +96,6 @@ export class WatchingPage {
           element.time_left = this.counter(element.next_episode);
         })
       }
-      else this.showToast("Watching list is empty");
     });
   }
   
