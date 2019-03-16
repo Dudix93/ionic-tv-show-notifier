@@ -6,7 +6,6 @@ import { RestapiServiceProvider } from '../../providers/restapi-service/restapi-
 import { UserService } from '../../providers/user-service/user-service';
 import { GlobalVars } from '../../app/globalVars';
 import { AngularFireDatabase } from 'angularfire2/database';
-import { User } from '../../models/user';
 import { PopoverPage } from '../../pages/popover/popover'
 
 declare let cordova:any

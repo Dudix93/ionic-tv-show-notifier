@@ -24,7 +24,6 @@ password:string = ''
   }
 
   login(){
-    let valid = false;
     this.users.forEach(user=>{
       console.log(user.val());
     });
