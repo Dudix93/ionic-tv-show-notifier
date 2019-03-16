@@ -1,5 +1,5 @@
-import { Component, ViewChild } from '@angular/core';
-import { NavController, AlertController, ToastController, LoadingController, Content, FabContainer } from 'ionic-angular';
+import { Component } from '@angular/core';
+import { NavController, AlertController, ToastController, LoadingController, FabContainer } from 'ionic-angular';
 import { RestapiServiceProvider } from '../../providers/restapi-service/restapi-service';
 import { Storage } from '@ionic/storage';
 import { GlobalVars } from '../../app/globalVars';
@@ -31,8 +31,6 @@ export class BrowsePage {
     hour:new Date()
   }
   toast = this.toastCtrl.create();
-  // client_credentials:number = 403;
-  // client_secret:string = 'gf66CF5kVIEhbyr5yKnweAVDxKxIZUmhuDQg8tTO';
 
   client_credentials:string = 'animunotifier-j0ybs';
   client_secret:string = 'UqdeljBAhwnTPoT5TPV';
@@ -60,11 +58,9 @@ export class BrowsePage {
       spinner: 'crescent',
       content: 'Fetching anime list...'
     });
-    if(this.showGenres == false)loading.present();
+    this.showGenres == false ? loading.present() :'';
     this.animes = [];
-    if(this.searchString != null && this.searchString != ''){
-      this.searchString = this.searchString.toLocaleLowerCase();
-    }
+    this.searchString != null && this.searchString != '' ? this.searchString = this.searchString.toLocaleLowerCase() :'';
     for(let i=1; i<20; i++){
       this.restApi.getAnime(i).then(data=>{
         this.animu = data;
