@@ -23,8 +23,6 @@ export class WatchingPage {
     "time_left":'',
     "image":{"url":'',"width":0,"height":0}
   }
-  client_credentials:string = 'animunotifier-j0ybs';
-  client_secret:string = 'UqdeljBAhwnTPoT5TPV';
   toast = this.toastCtrl.create();
   response:any
 
@@ -48,11 +46,11 @@ export class WatchingPage {
           console.log(element.val());
         });
       });
-      this.api.authorize({grant_type:"client_credentials",client_id:this.client_credentials,client_secret:this.client_secret}).then(data=>{
-        this.response = data;
-        this.globalVars.setToken(this.response.json().access_token);
-        this.refreshList();
-      });
+      // this.api.authorize({grant_type:"client_credentials",client_id:this.client_credentials,client_secret:this.client_secret}).then(data=>{
+      //   this.response = data;
+      //   this.globalVars.setToken(this.response.json().access_token);
+      //   this.refreshList();
+      // });
 
       this.event.subscribe('refreshList',()=>{
         this.refreshList();

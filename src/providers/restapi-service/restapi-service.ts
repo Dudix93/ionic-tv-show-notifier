@@ -8,7 +8,7 @@ import { GlobalVars } from '../../app/globalVars';
 export class RestapiServiceProvider {
   err:any;
   data:any;
-  apiUrl = 'https://anilist.co/api';
+  apiUrl = 'https://kitsu.io/api/edge';
   constructor(
     public http: Http, 
     public storage:Storage,
@@ -17,7 +17,7 @@ export class RestapiServiceProvider {
 
   headers(token):RequestOptions{
     let headers = new Headers();
-    if(token != null)headers.append("Authorization", "Bearer " + token);
+    // if(token != null)headers.append("Authorization", "Bearer " + token);
     headers.append('Accept', 'application/vnd.api+json');
     headers.append('Content-Type', 'application/vnd.api+json');
     headers.append('Access-Control-Allow-Origin', '*');
@@ -26,16 +26,16 @@ export class RestapiServiceProvider {
   }
 
 
-  authorize(data){
-    return new Promise((resolve, reject) => {
-      this.http.post(this.apiUrl+'/auth/access_token',data,this.headers(null))
-      .subscribe(res => {
-        resolve(res);
-      }, (err) => {
-        reject(err);
-      });
-  });
-  }
+  // authorize(data){
+  //   return new Promise((resolve, reject) => {
+  //     this.http.post(this.apiUrl+'/auth/access_token',data,this.headers(null))
+  //     .subscribe(res => {
+  //       resolve(res);
+  //     }, (err) => {
+  //       reject(err);
+  //     });
+  // });
+  // }
 
   postRequest(parameters) {
     return new Promise(resolve => {
@@ -52,8 +52,8 @@ export class RestapiServiceProvider {
     });
   }
 
-  getAnime(page) {
-    return this.postRequest('/browse/anime?status=currently airing&page='+page);
+  getAnime() {
+    return this.postRequest('/anime?filter[status]=current');
   }
 
   getGenres(){
