@@ -43,7 +43,7 @@
             <button ion-fab (click)="changeTitleType(fab)">
                 <ion-icon name="md-quote"></ion-icon>
                 <ion-label *ngIf="title_type == 'title_english'">English</ion-label>
-                <ion-label *ngIf="title_type == 'title_japanese'">Japanese</ion-label>
+                <ion-label *ngIf="title_type == 'a.attributes.titles.ja_jp'">Japanese</ion-label>
                 <ion-label *ngIf="title_type == 'title_romaji'">Romaji</ion-label>
             </button>
 
@@ -78,17 +78,31 @@
 
     <ion-list *ngIf="searchResults.length == 0 && showGenres == false && searchString == '' && selectedGenres.length == 0">
         <ng-container *ngFor="let a of animes">
-            <ion-item *ngIf="title_type == 'title_english'" (click)="moreInfo(a)">{{ (a.title_english.length>40)? (a.title_english | slice:0:40)+'...':(a.title_english) }}</ion-item>
-            <ion-item *ngIf="title_type == 'title_japanese'" (click)="moreInfo(a)">{{ (a.title_japanese.length>40)? (a.title_japanese | slice:0:40)+'...':(a.title_japanese) }}</ion-item>
-            <ion-item *ngIf="title_type == 'title_romaji'" (click)="moreInfo(a)">{{ (a.title_romaji.length>40)? (a.title_romaji | slice:0:40)+'...':(a.title_romaji) }}</ion-item>
+                <ion-item *ngIf="title_type == 'title_english'" (click)="moreInfo(a)">
+                        <ng-container *ngIf="a.attributes.titles.en.length != 0">
+                              {{ (a.attributes.titles.en.length>40)? (a.attributes.titles.en | slice:0:40)+'...':(a.attributes.titles.en) }}
+                        </ng-container>
+                        <ng-container *ngIf="a.attributes.titles.en.length === 0">
+                              {{ (a.attributes.titles.ja_jp.length>40)? (a.attributes.titles.en | slice:0:40)+'...':(a.attributes.titles.en) }}
+                        </ng-container>
+                    </ion-item>
+            <ion-item *ngIf="title_type == 'a.attributes.titles.ja_jp'" (click)="moreInfo(a)">{{ (a.attributes.titles.ja_jp.length>40)? (a.attributes.titles.ja_jp | slice:0:40)+'...':(a.attributes.titles.ja_jp) }}</ion-item>
+            <ion-item *ngIf="title_type == 'title_romaji'" (click)="moreInfo(a)">{{ (a.attributes.titles.en_jp.length>40)? (a.attributes.titles.en_jp | slice:0:40)+'...':(a.attributes.titles.en_jp) }}</ion-item>
         </ng-container>
     </ion-list>
 
     <ion-list *ngIf="searchResults.length != 0 && showGenres == false">
       <ng-container *ngFor="let a of searchResults">
-          <ion-item *ngIf="title_type == 'title_english'" (click)="moreInfo(a)">{{ (a.title_english.length>40)? (a.title_english | slice:0:40)+'...':(a.title_english) }}</ion-item>
-          <ion-item *ngIf="title_type == 'title_japanese'" (click)="moreInfo(a)">{{ (a.title_japanese.length>40)? (a.title_japanese | slice:0:40)+'...':(a.title_japanese) }}</ion-item>
-          <ion-item *ngIf="title_type == 'title_romaji'" (click)="moreInfo(a)">{{ (a.title_romaji.length>40)? (a.title_romaji | slice:0:40)+'...':(a.title_romaji) }}</ion-item>
+          <ion-item *ngIf="title_type == 'title_english'" (click)="moreInfo(a)">
+              <ng-container *ngIf="a.attributes.titles.en.length != 0">
+                    {{ (a.attributes.titles.en.length>40)? (a.attributes.titles.en | slice:0:40)+'...':(a.attributes.titles.en) }}
+              </ng-container>
+              <ng-container *ngIf="a.attributes.titles.en.length === 0">
+                    {{ (a.attributes.titles.ja_jp.length>40)? (a.attributes.titles.en | slice:0:40)+'...':(a.attributes.titles.en) }}
+              </ng-container>
+          </ion-item>
+          <ion-item *ngIf="title_type == 'a.attributes.titles.ja_jp'" (click)="moreInfo(a)">{{ (a.attributes.titles.ja_jp.length>40)? (a.attributes.titles.ja_jp | slice:0:40)+'...':(a.attributes.titles.ja_jp) }}</ion-item>
+          <ion-item *ngIf="title_type == 'title_romaji'" (click)="moreInfo(a)">{{ (a.attributes.titles.en_jp.length>40)? (a.attributes.titles.en_jp | slice:0:40)+'...':(a.attributes.titles.en_jp) }}</ion-item>
       </ng-container>
     </ion-list>
 

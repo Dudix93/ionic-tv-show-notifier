@@ -32,8 +32,8 @@ export class BrowsePage {
   }
   toast = this.toastCtrl.create();
 
-  client_credentials:string = 'animunotifier-j0ybs';
-  client_secret:string = 'UqdeljBAhwnTPoT5TPV';
+  // client_credentials:string = 'animunotifier-j0ybs';
+  // client_secret:string = 'UqdeljBAhwnTPoT5TPV';
 
   constructor(
     public navCtrl: NavController,
@@ -44,13 +44,14 @@ export class BrowsePage {
     public alertCtrl: AlertController,
     public toastCtrl: ToastController,
     public loadingCtrl:LoadingController) {
-
-      this.restApi.authorize({grant_type:"client_credentials",client_id:this.client_credentials,client_secret:this.client_secret}).then(data=>{
-        this.response = data;
-        this.globalVars.setToken(this.response.json().access_token);
         this.getAnimes();
-        this.getGenres();
-      });
+        // this.getGenres();
+      // this.restApi.authorize({grant_type:"client_credentials",client_id:this.client_credentials,client_secret:this.client_secret}).then(data=>{
+      //   this.response = data;
+      //   this.globalVars.setToken(this.response.json().access_token);
+      //   this.getAnimes();
+      //   this.getGenres();
+      // });
   }
 
   getAnimes(){
@@ -61,15 +62,15 @@ export class BrowsePage {
     this.showGenres == false ? loading.present() :'';
     this.animes = [];
     this.searchString != null && this.searchString != '' ? this.searchString = this.searchString.toLocaleLowerCase() :'';
-    for(let i=1; i<20; i++){
-      this.restApi.getAnime(i).then(data=>{
+    // for(let i=1; i<20; i++){
+      this.restApi.getAnime().then(data=>{
         this.animu = data;
-        this.animu.forEach(a => {
+        this.animu['data'].forEach(a => {
           this.animes.push(a);
-          this.animes.sort(this.compareValues("title_english",'asc'));
+          this.animes.sort(this.compareValues(a['attributes']['titles']['en'],'asc'));
         });
       });
-    }
+    // }
     loading.dismiss();
   }
 
