@@ -15,7 +15,7 @@
     <ion-searchbar *ngIf="showGenres == false"
     [(ngModel)]="searchString"
     [showCancelButton]="shouldShowCancel"
-    (ionInput)="search()"
+    (ionInput)="search(title_type)"
     (ionCancel)="clearSearch()"
     placeholder="Search for anime">
     </ion-searchbar>
@@ -42,9 +42,9 @@
 
             <button ion-fab (click)="changeTitleType(fab)">
                 <ion-icon name="md-quote"></ion-icon>
-                <ion-label *ngIf="title_type == 'title_english'">English</ion-label>
-                <ion-label *ngIf="title_type == 'a.attributes.titles.en_jp'">enpanese</ion-label>
-                <ion-label *ngIf="title_type == 'title_romaji'">Romaji</ion-label>
+                <ion-label *ngIf="title_type == 'en'">English</ion-label>
+                <ion-label *ngIf="title_type == 'ja_jp'">Japanese</ion-label>
+                <ion-label *ngIf="title_type == 'en_jp'">Romaji</ion-label>
             </button>
 
             <button ion-fab (click)="changeOrder(fab)">
@@ -78,7 +78,7 @@
 
     <ion-list *ngIf="searchResults.length == 0 && showGenres == false && searchString == '' && selectedGenres.length == 0">
         <ng-container *ngFor="let a of animes">
-                <ion-item *ngIf="title_type == 'title_english'" (click)="moreInfo(a)">
+                <ion-item *ngIf="title_type == 'en'" (click)="moreInfo(a)">
                         <ng-container *ngIf="a.attributes.titles.en != undefined">
                               {{ (a.attributes.titles.en.length>40)? (a.attributes.titles.en | slice:0:40)+'...':(a.attributes.titles.en) }}
                         </ng-container>
@@ -86,14 +86,14 @@
                               {{ (a.attributes.titles.en_jp.length>40)? (a.attributes.titles.en_jp | slice:0:40)+'...':(a.attributes.titles.en_jp) }}
                         </ng-container>
                     </ion-item>
-            <ion-item *ngIf="title_type == 'title_japanese'" (click)="moreInfo(a)">{{ (a.attributes.titles.en_jp.length>40)? (a.attributes.titles.en_jp | slice:0:40)+'...':(a.attributes.titles.en_jp) }}</ion-item>
-            <ion-item *ngIf="title_type == 'title_romaji'" (click)="moreInfo(a)">{{ (a.attributes.titles.en_jp.length>40)? (a.attributes.titles.en_jp | slice:0:40)+'...':(a.attributes.titles.en_jp) }}</ion-item>
+            <ion-item *ngIf="title_type == 'ja_jp'" (click)="moreInfo(a)">{{ (a.attributes.titles.ja_jp.length>40)? (a.attributes.titles.ja_jp | slice:0:40)+'...':(a.attributes.titles.ja_jp) }}</ion-item>
+            <ion-item *ngIf="title_type == 'en_jp'" (click)="moreInfo(a)">{{ (a.attributes.titles.en_jp.length>40)? (a.attributes.titles.en_jp | slice:0:40)+'...':(a.attributes.titles.en_jp) }}</ion-item>
         </ng-container>
     </ion-list>
 
     <ion-list *ngIf="searchResults.length != 0 && showGenres == false">
       <ng-container *ngFor="let a of searchResults">
-          <ion-item *ngIf="title_type == 'title_english'" (click)="moreInfo(a)">
+          <ion-item *ngIf="title_type == 'en'" (click)="moreInfo(a)">
                 <ng-container *ngIf="a.attributes.titles.en != undefined">
                         {{ (a.attributes.titles.en.length>40)? (a.attributes.titles.en | slice:0:40)+'...':(a.attributes.titles.en) }}
                   </ng-container>
@@ -101,8 +101,8 @@
                         {{ (a.attributes.titles.en_jp.length>40)? (a.attributes.titles.en_jp | slice:0:40)+'...':(a.attributes.titles.en_jp) }}
                   </ng-container>
           </ion-item>
-          <ion-item *ngIf="title_type == 'title_japanese'" (click)="moreInfo(a)">{{ (a.attributes.titles.en_jp.length>40)? (a.attributes.titles.en_jp | slice:0:40)+'...':(a.attributes.titles.en_jp) }}</ion-item>
-          <ion-item *ngIf="title_type == 'title_romaji'" (click)="moreInfo(a)">{{ (a.attributes.titles.en_jp.length>40)? (a.attributes.titles.en_jp | slice:0:40)+'...':(a.attributes.titles.en_jp) }}</ion-item>
+          <ion-item *ngIf="title_type == 'ja_jp'" (click)="moreInfo(a)">{{ (a.attributes.titles.ja_jp.length>40)? (a.attributes.titles.ja_jp | slice:0:40)+'...':(a.attributes.titles.ja_jp) }}</ion-item>
+          <ion-item *ngIf="title_type == 'en_jp'" (click)="moreInfo(a)">{{ (a.attributes.titles.en_jp.length>40)? (a.attributes.titles.en_jp | slice:0:40)+'...':(a.attributes.titles.en_jp) }}</ion-item>
       </ng-container>
     </ion-list>
 

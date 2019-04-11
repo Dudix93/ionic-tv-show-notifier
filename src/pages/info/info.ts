@@ -47,7 +47,7 @@ export class InfoPage {
       }
     })
     let date:Date;
-    console.log(navParams.get('anime'));
+    console.log('navParams: '+navParams.get('anime'));
     this.anime.id = navParams.get('anime').id;
     this.anime.title_english = navParams.get('anime').title_english;
     this.anime.title_romaji = navParams.get('anime').title_romaji;

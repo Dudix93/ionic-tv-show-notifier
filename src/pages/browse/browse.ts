@@ -24,7 +24,7 @@ export class BrowsePage {
   searchResults:Array<any> = []
   searchString:string = ''
   order:string = 'asc'
-  title_type:string = 'title_english'
+  title_type:string = 'en'
   showGenres:boolean = false;
   notification = {
     same:true,
@@ -64,14 +64,14 @@ export class BrowsePage {
     this.searchString != null && this.searchString != '' ? this.searchString = this.searchString.toLocaleLowerCase() :'';
     // for(let i=1; i<20; i++){
       this.restApi.getAnime().then(data=>{
-        this.animu = data;
-        this.animu['data'].forEach(a => {
+        this.animu = data['data'];
+        this.animu.forEach(a => {
           this.animes.push(a);
-          this.animes.sort(this.compareValues(a['attributes']['titles']['en'],'asc'));
+          this.animes.sort(this.compareValues('en_jp','asc'));
         });
+        loading.dismiss();
       });
     // }
-    loading.dismiss();
   }
 
   getGenres(){
@@ -128,10 +128,11 @@ export class BrowsePage {
     this.searchResults = selectedAnimes;
   }  
 
-  search(){
+  search(title_type){
     this.searchResults = [];
     this.animes.forEach(a=>{
-      if(a.title_english.toLocaleLowerCase().includes(this.searchString.toLocaleLowerCase())){
+      let title = undefined != a.attributes.titles[title_type] ? title_type : 'en_jp';
+      if(a.attributes.titles[title].toLocaleLowerCase().includes(this.searchString.toLocaleLowerCase())){
         this.searchResults.push(a);
       }
     });
@@ -159,17 +160,17 @@ export class BrowsePage {
   }
 
   changeOrder(fab: FabContainer){
-    if(this.order == 'asc')this.order = 'desc'
-    else this.order = 'asc'
-    if(this.searchResults.length != 0)this.searchResults.sort(this.compareValues(this.title_type,this.order));
-    else this.animes.sort(this.compareValues(this.title_type,this.order));
+    'asc' === this.order ? this.order = 'desc' : this.order = 'asc'
+     0 != this.searchResults.length ? 
+     this.searchResults.sort(this.compareValues(this.title_type,this.order)) :
+     this.animes.sort(this.compareValues(this.title_type,this.order));
     fab.close();
   }
 
   changeTitleType(fab: FabContainer){
-    if(this.title_type == 'title_romaji')this.title_type = 'title_japanese'
-    else if(this.title_type == 'title_japanese')this.title_type = 'title_english'
-    else this.title_type = 'title_romaji'
+    if(this.title_type == 'en_jp')this.title_type = 'ja_jp'
+    else if(this.title_type == 'ja_jp')this.title_type = 'en'
+    else this.title_type = 'en_jp'
     fab.close();
   }
 
@@ -233,12 +234,12 @@ export class BrowsePage {
   compareValues(key, order = 'asc') {
     return function(a, b) {
     
-      if(!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {
+      if(!a.attributes.titles.hasOwnProperty(key) || !b.attributes.titles.hasOwnProperty(key)) {
           return 0; 
       }
   
-      const valueA = (typeof a[key] === 'string') ? a[key].toUpperCase() : a[key];
-      const valueB = (typeof b[key] === 'string') ? b[key].toUpperCase() : b[key];
+      const valueA = (typeof a.attributes.titles[key] === 'string') ? a.attributes.titles[key].toUpperCase() : a.attributes.titles[key];
+      const valueB = (typeof b.attributes.titles[key] === 'string') ? b.attributes.titles[key].toUpperCase() : b.attributes.titles[key];
   
       let comparison = 0;
       if (valueA > valueB) {
